@@ -1,0 +1,11 @@
+﻿channel_id,channel_name,channel_group
+C01,Branch,Assisted
+C02,ATM,Self-Service
+C03,Online Banking,Digital
+C04,Mobile App,Digital
+C05,Call Center,Assisted
+C06,ACH Network,External
+C07,Card Network,External
+C08,Wire Desk,Assisted
+C09,Batch Processing,System
+C10,API,System

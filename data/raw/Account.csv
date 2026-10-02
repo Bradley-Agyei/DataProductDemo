@@ -1,0 +1,11 @@
+﻿account_id,member_id,product_id,branch_id,account_type,open_date,account_status,current_balance,currency_code
+A00001,M0001,P001,B001,Checking,1/8/2019,Open,$500.00 ,USD
+A00002,M0002,P002,B002,Checking,3/9/2020,Open,"$1,225.35 ",USD
+A00003,M0003,P003,B003,Savings,5/10/2021,Open,"$1,950.70 ",USD
+A00004,M0004,P004,B004,Savings,7/11/2022,Restricted,"$2,676.05 ",USD
+A00005,M0005,P005,B005,Money Market,9/12/2023,Open,"$3,401.40 ",USD
+A00006,M0006,P006,B006,Certificate,11/13/2019,Open,"$4,126.75 ",USD
+A00007,M0007,P007,B007,Loan,1/14/2020,Open,"$4,852.10 ",USD
+A00008,M0008,P008,B008,Loan,3/15/2021,Restricted,"$5,577.45 ",USD
+A00009,M0009,P009,B009,Credit Card,5/16/2022,Open,"$6,302.80 ",USD
+A00010,M0010,P010,B010,Credit Card,7/17/2023,Open,"$7,028.15 ",USD

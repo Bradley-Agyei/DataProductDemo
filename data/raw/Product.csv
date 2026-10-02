@@ -1,0 +1,11 @@
+﻿product_id,product_name,product_category,currency_code,monthly_fee,interest_rate_pct,product_status
+P001,Everyday Checking,Checking,USD,$0.00 ,0,Active
+P002,Rewards Checking,Checking,USD,$5.00 ,0.1,Active
+P003,Basic Savings,Savings,USD,$0.00 ,1.25,Active
+P004,High Yield Savings,Savings,USD,$0.00 ,3.75,Active
+P005,Money Market,Money Market,USD,$10.00 ,2.5,Active
+P006,12 Month CD,Certificate,USD,$0.00 ,4.1,Active
+P007,Personal Loan,Loan,USD,$0.00 ,8.25,Active
+P008,Auto Loan,Loan,USD,$0.00 ,6.5,Active
+P009,Credit Card Standard,Credit Card,USD,$0.00 ,18.99,Active
+P010,Credit Card Rewards,Credit Card,USD,$0.00 ,21.49,Active

@@ -1,0 +1,11 @@
+﻿date_key,full_date,day_name,month_name,month_number,quarter_number,year_number,is_weekend
+20260921,9/21/2026,Monday,September,9,3,2026,FALSE
+20260922,9/22/2026,Tuesday,September,9,3,2026,FALSE
+20260923,9/23/2026,Wednesday,September,9,3,2026,FALSE
+20260924,9/24/2026,Thursday,September,9,3,2026,FALSE
+20260925,9/25/2026,Friday,September,9,3,2026,FALSE
+20260926,9/26/2026,Saturday,September,9,3,2026,TRUE
+20260927,9/27/2026,Sunday,September,9,3,2026,TRUE
+20260928,9/28/2026,Monday,September,9,3,2026,FALSE
+20260929,9/29/2026,Tuesday,September,9,3,2026,FALSE
+20260930,9/30/2026,Wednesday,September,9,3,2026,FALSE

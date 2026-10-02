@@ -1,0 +1,11 @@
+﻿transaction_type_id,transaction_type_name,debit_credit_indicator,transaction_category
+TT01,Deposit,Credit,Funding
+TT02,Withdrawal,Debit,Cash
+TT03,ACH Credit,Credit,ACH
+TT04,ACH Debit,Debit,ACH
+TT05,Card Purchase,Debit,Card
+TT06,Card Refund,Credit,Card
+TT07,Wire In,Credit,Wire
+TT08,Wire Out,Debit,Wire
+TT09,Fee,Debit,Fee
+TT10,Interest,Credit,Interest

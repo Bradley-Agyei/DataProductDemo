@@ -1,0 +1,11 @@
+﻿branch_id,branch_name,city,state,postal_code,time_zone,branch_status
+B001,Uptown,Charlotte,NC,28202,Eastern,Open
+B002,SouthPark,Charlotte,NC,28210,Eastern,Open
+B003,Downtown Raleigh,Raleigh,NC,27601,Eastern,Open
+B004,Midtown Atlanta,Atlanta,GA,30309,Eastern,Open
+B005,Richmond Central,Richmond,VA,23219,Eastern,Open
+B006,Nashville Center,Nashville,TN,37219,Central,Open
+B007,Columbia Main,Columbia,SC,29201,Eastern,Open
+B008,Jacksonville Riverfront,Jacksonville,FL,32202,Eastern,Open
+B009,Baltimore Harbor,Baltimore,MD,21202,Eastern,Open
+B010,Norfolk Main,Norfolk,VA,23510,Eastern,Open

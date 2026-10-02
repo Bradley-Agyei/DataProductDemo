@@ -1,0 +1,11 @@
+﻿member_id,first_name,last_name,join_date,city,state,postal_code,member_status,member_segment
+M0001,Avery,Brooks,1/5/2018,Charlotte,NC,28202,Active,Retail
+M0002,Jordan,Patel,2/6/2019,Raleigh,NC,27601,Active,Premium
+M0003,Taylor,Kim,3/7/2020,Atlanta,GA,30303,Active,Student
+M0004,Morgan,Garcia,4/8/2021,Richmond,VA,23219,Dormant,Small Business
+M0005,Casey,Johnson,5/9/2022,Nashville,TN,37219,Active,Retail
+M0006,Riley,Nguyen,6/10/2023,Columbia,SC,29201,Active,Premium
+M0007,Cameron,Brown,7/11/2018,Jacksonville,FL,32202,Active,Student
+M0008,Parker,Davis,8/12/2019,Baltimore,MD,21201,Dormant,Small Business
+M0009,Quinn,Wilson,9/13/2020,Norfolk,VA,23510,Active,Retail
+M0010,Reese,Martinez,10/14/2021,Durham,NC,27701,Active,Premium

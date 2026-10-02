@@ -1,0 +1,101 @@
+﻿member_id,member_since_date,member_segment,age_band,home_state,digital_enrolled_flag,kyc_status,risk_rating,relationship_status,last_profile_update_ts
+M000001,2/2/2015,Premium,25-34,VA,TRUE,Verified,Medium,Active,9/2/2026 9:01
+M000002,3/3/2016,Student,35-44,GA,TRUE,Verified,High,Dormant,9/3/2026 10:02
+M000003,4/4/2017,Small Business,45-54,SC,TRUE,Review Required,Low,Restricted,9/4/2026 11:03
+M000004,5/5/2018,Retail,55-64,FL,TRUE,Verified,Medium,Active,9/5/2026 12:04
+M000005,6/6/2019,Premium,65+,MD,FALSE,Verified,High,Active,9/6/2026 13:05
+M000006,7/7/2020,Student,18-24,TN,TRUE,Verified,Low,Dormant,9/7/2026 14:06
+M000007,8/8/2021,Small Business,25-34,NC,TRUE,Review Required,Medium,Restricted,9/8/2026 15:07
+M000008,9/9/2022,Retail,35-44,VA,TRUE,Verified,High,Active,9/9/2026 16:08
+M000009,10/10/2023,Premium,45-54,GA,TRUE,Verified,Low,Active,9/10/2026 8:09
+M000010,11/11/2024,Student,55-64,SC,FALSE,Verified,Medium,Dormant,9/11/2026 9:10
+M000011,12/12/2025,Small Business,65+,FL,TRUE,Review Required,High,Restricted,9/12/2026 10:11
+M000012,1/13/2014,Retail,18-24,MD,TRUE,Verified,Low,Active,9/13/2026 11:12
+M000013,2/14/2015,Premium,25-34,TN,TRUE,Verified,Medium,Active,9/14/2026 12:13
+M000014,3/15/2016,Student,35-44,NC,TRUE,Verified,High,Dormant,9/15/2026 13:14
+M000015,4/16/2017,Small Business,45-54,VA,FALSE,Review Required,Low,Restricted,9/16/2026 14:15
+M000016,5/17/2018,Retail,55-64,GA,TRUE,Verified,Medium,Active,9/17/2026 15:16
+M000017,6/18/2019,Premium,65+,SC,TRUE,Verified,High,Active,9/18/2026 16:17
+M000018,7/19/2020,Student,18-24,FL,TRUE,Verified,Low,Dormant,9/19/2026 8:18
+M000019,8/20/2021,Small Business,25-34,MD,TRUE,Review Required,Medium,Restricted,9/20/2026 9:19
+M000020,9/21/2022,Retail,35-44,TN,FALSE,Verified,High,Active,9/21/2026 10:20
+M000021,10/22/2023,Premium,45-54,NC,TRUE,Verified,Low,Active,9/22/2026 11:21
+M000022,11/23/2024,Student,55-64,VA,TRUE,Verified,Medium,Dormant,9/23/2026 12:22
+M000023,12/24/2025,Small Business,65+,GA,TRUE,Review Required,High,Restricted,9/24/2026 13:23
+M000024,1/25/2014,Retail,18-24,SC,TRUE,Verified,Low,Active,9/25/2026 14:24
+M000025,2/26/2015,Premium,25-34,FL,FALSE,Verified,Medium,Active,9/26/2026 15:25
+M000026,3/27/2016,Student,35-44,MD,TRUE,Verified,High,Dormant,9/27/2026 16:26
+M000027,4/1/2017,Small Business,45-54,TN,TRUE,Review Required,Low,Restricted,9/28/2026 8:27
+M000028,5/2/2018,Retail,55-64,NC,TRUE,Verified,Medium,Active,9/1/2026 9:28
+M000029,6/3/2019,Premium,65+,VA,TRUE,Verified,High,Active,9/2/2026 10:29
+M000030,7/4/2020,Student,18-24,GA,FALSE,Verified,Low,Dormant,9/3/2026 11:30
+M000031,8/5/2021,Small Business,25-34,SC,TRUE,Review Required,Medium,Restricted,9/4/2026 12:31
+M000032,9/6/2022,Retail,35-44,FL,TRUE,Verified,High,Active,9/5/2026 13:32
+M000033,10/7/2023,Premium,45-54,MD,TRUE,Verified,Low,Active,9/6/2026 14:33
+M000034,11/8/2024,Student,55-64,TN,TRUE,Verified,Medium,Dormant,9/7/2026 15:34
+M000035,12/9/2025,Small Business,65+,NC,FALSE,Review Required,High,Restricted,9/8/2026 16:35
+M000036,1/10/2014,Retail,18-24,VA,TRUE,Verified,Low,Active,9/9/2026 8:36
+M000037,2/11/2015,Premium,25-34,GA,TRUE,Verified,Medium,Active,9/10/2026 9:37
+M000038,3/12/2016,Student,35-44,SC,TRUE,Verified,High,Dormant,9/11/2026 10:38
+M000039,4/13/2017,Small Business,45-54,FL,TRUE,Review Required,Low,Restricted,9/12/2026 11:39
+M000040,5/14/2018,Retail,55-64,MD,FALSE,Verified,Medium,Active,9/13/2026 12:40
+M000041,6/15/2019,Premium,65+,TN,TRUE,Verified,High,Active,9/14/2026 13:41
+M000042,7/16/2020,Student,18-24,NC,TRUE,Verified,Low,Dormant,9/15/2026 14:42
+M000043,8/17/2021,Small Business,25-34,VA,TRUE,Review Required,Medium,Restricted,9/16/2026 15:43
+M000044,9/18/2022,Retail,35-44,GA,TRUE,Verified,High,Active,9/17/2026 16:44
+M000045,10/19/2023,Premium,45-54,SC,FALSE,Verified,Low,Active,9/18/2026 8:45
+M000046,11/20/2024,Student,55-64,FL,TRUE,Verified,Medium,Dormant,9/19/2026 9:46
+M000047,12/21/2025,Small Business,65+,MD,TRUE,Review Required,High,Restricted,9/20/2026 10:47
+M000048,1/22/2014,Retail,18-24,TN,TRUE,Verified,Low,Active,9/21/2026 11:48
+M000049,2/23/2015,Premium,25-34,NC,TRUE,Verified,Medium,Active,9/22/2026 12:49
+M000050,3/24/2016,Student,35-44,VA,FALSE,Verified,High,Dormant,9/23/2026 13:50
+M000051,4/25/2017,Small Business,45-54,GA,TRUE,Review Required,Low,Restricted,9/24/2026 14:51
+M000052,5/26/2018,Retail,55-64,SC,TRUE,Verified,Medium,Active,9/25/2026 15:52
+M000053,6/27/2019,Premium,65+,FL,TRUE,Verified,High,Active,9/26/2026 16:53
+M000054,7/1/2020,Student,18-24,MD,TRUE,Verified,Low,Dormant,9/27/2026 8:54
+M000055,8/2/2021,Small Business,25-34,TN,FALSE,Review Required,Medium,Restricted,9/28/2026 9:55
+M000056,9/3/2022,Retail,35-44,NC,TRUE,Verified,High,Active,9/1/2026 10:56
+M000057,10/4/2023,Premium,45-54,VA,TRUE,Verified,Low,Active,9/2/2026 11:57
+M000058,11/5/2024,Student,55-64,GA,TRUE,Verified,Medium,Dormant,9/3/2026 12:58
+M000059,12/6/2025,Small Business,65+,SC,TRUE,Review Required,High,Restricted,9/4/2026 13:59
+M000060,1/7/2014,Retail,18-24,FL,FALSE,Verified,Low,Active,9/5/2026 14:00
+M000061,2/8/2015,Premium,25-34,MD,TRUE,Verified,Medium,Active,9/6/2026 15:01
+M000062,3/9/2016,Student,35-44,TN,TRUE,Verified,High,Dormant,9/7/2026 16:02
+M000063,4/10/2017,Small Business,45-54,NC,TRUE,Review Required,Low,Restricted,9/8/2026 8:03
+M000064,5/11/2018,Retail,55-64,VA,TRUE,Verified,Medium,Active,9/9/2026 9:04
+M000065,6/12/2019,Premium,65+,GA,FALSE,Verified,High,Active,9/10/2026 10:05
+M000066,7/13/2020,Student,18-24,SC,TRUE,Verified,Low,Dormant,9/11/2026 11:06
+M000067,8/14/2021,Small Business,25-34,FL,TRUE,Review Required,Medium,Restricted,9/12/2026 12:07
+M000068,9/15/2022,Retail,35-44,MD,TRUE,Verified,High,Active,9/13/2026 13:08
+M000069,10/16/2023,Premium,45-54,TN,TRUE,Verified,Low,Active,9/14/2026 14:09
+M000070,11/17/2024,Student,55-64,NC,FALSE,Verified,Medium,Dormant,9/15/2026 15:10
+M000071,12/18/2025,Small Business,65+,VA,TRUE,Review Required,High,Restricted,9/16/2026 16:11
+M000072,1/19/2014,Retail,18-24,GA,TRUE,Verified,Low,Active,9/17/2026 8:12
+M000073,2/20/2015,Premium,25-34,SC,TRUE,Verified,Medium,Active,9/18/2026 9:13
+M000074,3/21/2016,Student,35-44,FL,TRUE,Verified,High,Dormant,9/19/2026 10:14
+M000075,4/22/2017,Small Business,45-54,MD,FALSE,Review Required,Low,Restricted,9/20/2026 11:15
+M000076,5/23/2018,Retail,55-64,TN,TRUE,Verified,Medium,Active,9/21/2026 12:16
+M000077,6/24/2019,Premium,65+,NC,TRUE,Verified,High,Active,9/22/2026 13:17
+M000078,7/25/2020,Student,18-24,VA,TRUE,Verified,Low,Dormant,9/23/2026 14:18
+M000079,8/26/2021,Small Business,25-34,GA,TRUE,Review Required,Medium,Restricted,9/24/2026 15:19
+M000080,9/27/2022,Retail,35-44,SC,FALSE,Verified,High,Active,9/25/2026 16:20
+M000081,10/1/2023,Premium,45-54,FL,TRUE,Verified,Low,Active,9/26/2026 8:21
+M000082,11/2/2024,Student,55-64,MD,TRUE,Verified,Medium,Dormant,9/27/2026 9:22
+M000083,12/3/2025,Small Business,65+,TN,TRUE,Review Required,High,Restricted,9/28/2026 10:23
+M000084,1/4/2014,Retail,18-24,NC,TRUE,Verified,Low,Active,9/1/2026 11:24
+M000085,2/5/2015,Premium,25-34,VA,FALSE,Verified,Medium,Active,9/2/2026 12:25
+M000086,3/6/2016,Student,35-44,GA,TRUE,Verified,High,Dormant,9/3/2026 13:26
+M000087,4/7/2017,Small Business,45-54,SC,TRUE,Review Required,Low,Restricted,9/4/2026 14:27
+M000088,5/8/2018,Retail,55-64,FL,TRUE,Verified,Medium,Active,9/5/2026 15:28
+M000089,6/9/2019,Premium,65+,MD,TRUE,Verified,High,Active,9/6/2026 16:29
+M000090,7/10/2020,Student,18-24,TN,FALSE,Verified,Low,Dormant,9/7/2026 8:30
+M000091,8/11/2021,Small Business,25-34,NC,TRUE,Review Required,Medium,Restricted,9/8/2026 9:31
+M000092,9/12/2022,Retail,35-44,VA,TRUE,Verified,High,Active,9/9/2026 10:32
+M000093,10/13/2023,Premium,45-54,GA,TRUE,Verified,Low,Active,9/10/2026 11:33
+M000094,11/14/2024,Student,55-64,SC,TRUE,Verified,Medium,Dormant,9/11/2026 12:34
+M000095,12/15/2025,Small Business,65+,FL,FALSE,Review Required,High,Restricted,9/12/2026 13:35
+M000096,1/16/2014,Retail,18-24,MD,TRUE,Verified,Low,Active,9/13/2026 14:36
+M000097,2/17/2015,Premium,25-34,TN,TRUE,Verified,Medium,Active,9/14/2026 15:37
+M000098,3/18/2016,Student,35-44,NC,TRUE,Verified,High,Dormant,9/15/2026 16:38
+M000099,4/19/2017,Small Business,45-54,VA,TRUE,Review Required,Low,Restricted,9/16/2026 8:39
+M000100,5/20/2018,Retail,55-64,GA,FALSE,Verified,Medium,Active,9/17/2026 9:40
