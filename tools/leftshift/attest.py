@@ -48,9 +48,10 @@ TASK_STATES = frozenset({
 # this script's own review on its first real run.
 PROMPT_EXCLUDES = (":(exclude,icase)data/**", ":(exclude,icase)*.csv", ":(exclude).attestations/**",
                    ":(exclude)tools/specgate/**")
-# About 100k tokens. The first real PR (#3, two data products) needed 348k
-# characters; the limit is a refusal point, never a truncation point.
-PROMPT_LIMIT = 400_000
+# About 150k tokens, inside the reviewer's context window. PR #3 (two data
+# products in one PR) needed 405k characters once numbered; the limit is a
+# refusal point, never a truncation point.
+PROMPT_LIMIT = 600_000
 NPX = shutil.which("npx") or "npx"
 GATES: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("raw", (sys.executable, str(HERE / "checks.py"), "raw", "--staged", "--branch")),
