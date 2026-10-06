@@ -1,0 +1,12 @@
+# A required review on the two things a gate cannot judge: whether the
+# knowledge-transfer doc is any good, and whether an attestation is genuine.
+docs/kt/**       @josephrobertlopez @Bradley-Agyei
+.attestations/** @josephrobertlopez @Bradley-Agyei
+
+# pull_request runs the PR's own copy of a workflow, so an edit here could
+# switch a gate off. Until an org ruleset can require workflows from a
+# protected source, a human reviews every change to the gates themselves.
+.github/**       @josephrobertlopez @Bradley-Agyei
+tools/leftshift/** @josephrobertlopez @Bradley-Agyei
+tools/specgate/**  @josephrobertlopez @Bradley-Agyei
+lefthook.yml     @josephrobertlopez @Bradley-Agyei

@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "artifactId": "attestation",
+      "name": "left-shift attestation",
+      "parts": [
+        {
+          "data": {
+            "evaluator": {
+              "costUsd": 0.334562,
+              "model": "claude-sonnet-5",
+              "sessionId": "11dc6d2d-71f4-4c70-8eb9-332b1d641c83"
+            },
+            "findings": {
+              "unverified": [],
+              "verified": [
+                {
+                  "ac": "AC-7",
+                  "claim": "trace.json lists test_not_json as covering AC-7 (and the test itself carries '# covers: AC-7'), but the prd.md frontmatter's AC-7 `tests` list omits it, so the PRD's declared test list and the trace/test-tagging are out of sync.",
+                  "file": "openspec/changes/left-shift-gates/trace.json",
+                  "line": 213,
+                  "quote": "test_not_json",
+                  "severity": "LOW"
+                }
+              ]
+            },
+            "gates": [
+              {
+                "exit": 0,
+                "name": "raw"
+              },
+              {
+                "exit": 0,
+                "name": "pii"
+              },
+              {
+                "exit": 0,
+                "name": "openspec"
+              },
+              {
+                "exit": 0,
+                "name": "scenarios"
+              },
+              {
+                "exit": 0,
+                "name": "specgate"
+              },
+              {
+                "exit": 0,
+                "name": "unittest"
+              }
+            ],
+            "modelVerdict": "pass",
+            "promptSha256": "680f93bec481f3e14f082d1449e82dde7e4bd64e467ea27e97fc2678dc5cce62",
+            "review": {
+              "base": "0e59338b3b395cd6759865113919d9caeb8e7a3f",
+              "binaryFiles": 0,
+              "chars": 93015,
+              "files": 11
+            },
+            "subject": {
+              "algo": "sha256",
+              "digest": "5328d24f5ba331b0e8355ce6267f68529e33ce36bc291914892a456742d02564",
+              "excludes": [
+                ".attestations/"
+              ]
+            },
+            "summary": "The implementation (checks.py, attest.py) and its tests line up closely with every AC: raw/PII/scenario/kt-docs checks, the make/verify attestation flow, and the branch-wide, data-withholding review prompt all behave as specified, and no code path writes, copies or prints raw/PII values. The only issue found is a low-severity documentation drift: trace.json credits test_not_json toward AC-7 coverage even though the PRD frontmatter's AC-7 test list doesn't mention it.",
+            "verdict": "pass"
+          },
+          "mediaType": "application/json"
+        }
+      ]
+    }
+  ],
+  "contextId": "left-shift",
+  "history": [
+    {
+      "messageId": "msg-f08fbf5e-482f-4e2f-b5d4-af4b66a72cea",
+      "parts": [
+        {
+          "text": "review the staged change against its acceptance criteria; prompt sha256 680f93bec481f3e14f082d1449e82dde7e4bd64e467ea27e97fc2678dc5cce62"
+        }
+      ],
+      "role": "ROLE_USER"
+    }
+  ],
+  "id": "att-cdff4af4-fb13-4eb3-aaff-0e5e2dce510e",
+  "metadata": {
+    "a2aVersion": "1.0.0",
+    "producer": "tools/leftshift/attest.py"
+  },
+  "status": {
+    "message": {
+      "messageId": "msg-fb4341c0-6920-400e-9745-39b785e2addf",
+      "parts": [
+        {
+          "text": "verdict: pass (0 verified HIGH findings)"
+        }
+      ],
+      "role": "ROLE_AGENT"
+    },
+    "state": "TASK_STATE_COMPLETED",
+    "timestamp": "2026-10-06T18:34:30Z"
+  }
+}
