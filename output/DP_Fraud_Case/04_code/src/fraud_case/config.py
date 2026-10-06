@@ -6,7 +6,9 @@ from typing import Mapping
 CODE_DIR = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = CODE_DIR.parents[2]
 
-SOURCE_DIR = PROJECT_ROOT / "data" / "raw"
+# The extract is not a data/raw feed (data/raw is read-only and owned upstream); the only
+# committed copy is the byte-identical sample in data/product. Override with --src.
+SOURCE_DIR = PROJECT_ROOT / "data" / "product"
 SAMPLE_PRODUCT_CSV = PROJECT_ROOT / "data" / "product" / "DP_Fraud_Case.csv"
 # Member 360 publishes this file; override with --member-ref.
 MEMBER_REFERENCE_CSV = PROJECT_ROOT / "output" / "DP_Member_360" / "04_code" / "out" / "member_360.csv"
