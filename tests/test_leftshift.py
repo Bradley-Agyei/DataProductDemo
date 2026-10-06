@@ -90,6 +90,20 @@ class TestRawIsReadOnly(GitRepoCase):
         self.assertEqual(checks.raw_changes(self.repo, "main"), [])
 
 
+class TestRawAcrossTheBranch(GitRepoCase):
+    # covers: AC-1
+    def test_an_earlier_no_verify_commit_is_caught_from_the_fork_point(self):
+        self.write("data/raw/Member.csv", "member_id\nM1\n")
+        self.commit()
+        self.git("switch", "-q", "-c", "feat")
+        self.git("mv", "data/raw/Member.csv", "moved.txt")
+        self.commit("hooks skipped")
+        self.write("src/app.py", "x = 1\n")
+        self.git("add", "-A")
+        self.assertEqual(checks.raw_changes(self.repo, None), [])
+        self.assertEqual(checks.raw_changes(self.repo, None, "main"), ["D\tdata/raw/Member.csv"])
+
+
 class TestNoPiiColumns(GitRepoCase):
     def setUp(self):
         super().setUp()
@@ -249,6 +263,16 @@ class TestMake(AttestCase):
         self.assertEqual((len(findings["verified"]), len(findings["unverified"])), (0, 1))
 
     # covers: AC-5
+    def test_a_finding_on_a_binary_file_is_ignored_not_a_crash(self):
+        Path(self.repo, "docs").mkdir()
+        Path(self.repo, "docs", "Spec.docx").write_bytes(b"PK\x03\x04\xff\xfe")
+        self.git("add", "-A")
+        self.assertEqual(self.make(ask=answer([high("docs/Spec.docx", 1, "anything")])), 0)
+        data = self.task()["artifacts"][0]["parts"][0]["data"]
+        self.assertEqual(len(data["findings"]["unverified"]), 1)
+        self.assertEqual(data["review"]["binaryFiles"], 1)
+
+    # covers: AC-5
     def test_an_oversized_change_is_refused_not_truncated(self):
         with patch.object(attest, "PROMPT_LIMIT", 10):
             self.assertEqual(self.make(), 1)
@@ -265,14 +289,34 @@ class TestPromptNeverSeesData(AttestCase):
         self.write("tools/specgate/src/x.py", "VENDORED = 1\n")
         self.write(".attestations/old.json", "{}\n")
         self.write("data/raw/Member.csv", "member_id,first_name\nM1,SECRET_NAME_2\n")
+        Path(self.repo, "docs").mkdir()
+        Path(self.repo, "docs", "Spec.docx").write_bytes(b"PK\x03\x04\x00BINARY_VALUE\x00")
+        Path(self.repo, "docs", "Sheet.xlsx").write_bytes(b"\xff\xfeNOT_UTF8_VALUE")
         self.git("add", "-A")
-        files = attest.review_files(self.repo)
+        files, binary = attest.review_files(self.repo)
         self.assertEqual(sorted(files), ["src/app.py"])
-        prompt = attest.build_prompt(files, "acs", [])
+        self.assertEqual(sorted(binary), ["docs/Sheet.xlsx", "docs/Spec.docx"])
+        prompt = attest.build_prompt(files, "acs", [], binary)
         for leaked in ("SECRET_NAME", "PRODUCT_VALUE", "ROOT_CSV_VALUE", "UPPER_CSV_VALUE",
-                       "DATA_DIR_VALUE", "VENDORED"):
+                       "DATA_DIR_VALUE", "VENDORED", "BINARY_VALUE", "NOT_UTF8_VALUE"):
             self.assertNotIn(leaked, prompt)
         self.assertIn("    2      return 2", prompt)
+        self.assertIn("docs/Spec.docx", prompt)
+
+    # covers: AC-6
+    def test_the_review_covers_the_whole_branch_not_just_this_commit(self):
+        """A branch that merges main and then commits a small fix must still be reviewed whole."""
+        self.git("commit", "-q", "--no-verify", "-m", "main has app.py=2")
+        self.git("switch", "-q", "-c", "feat")
+        self.write("src/feature.py", "def g():\n    return 'branch code'\n")
+        self.commit("the branch's real work")
+        self.write("docs/fix.md", "small fix\n")
+        self.git("add", "-A")
+        with patch.dict(os.environ, {"LEFTSHIFT_BASE": "main"}):
+            base = attest.review_base(self.repo)
+        files, _ = attest.review_files(self.repo, base)
+        self.assertEqual(sorted(files), ["docs/fix.md", "src/feature.py"])
+        self.assertEqual(sorted(attest.review_files(self.repo)[0]), ["docs/fix.md"])
 
 
 class TestVerify(AttestCase):
@@ -322,6 +366,7 @@ class TestVerify(AttestCase):
         problems = attest.verify(self.repo)
         self.assertEqual(len(problems), 2)
         self.assertTrue(problems[0].startswith("gates recorded"))
+        self.assertIn("missing required ['specgate']", problems[0])
         self.assertEqual(problems[1], "gate raw exited 2")
 
     # covers: AC-7

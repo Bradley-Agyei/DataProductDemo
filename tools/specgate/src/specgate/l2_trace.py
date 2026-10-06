@@ -30,6 +30,16 @@ class MarkerLocation:
 SKIP_MARKER = ".specgate-skip"
 
 
+def is_nested_repo(path: Path) -> bool:
+    """True for a directory with its own `.git` (a worktree, a submodule, a clone).
+
+    A git worktree kept inside the repo -- agents put theirs in a gitignored
+    folder -- is a second full copy of every marker. Walking into it doubled
+    each AC's implements and covers and fed L4 and L5 the wrong files.
+    """
+    return (path / ".git").exists()
+
+
 def iter_py_files(directory: str) -> list[Path]:
     """Sorted .py files under directory, skipping tool caches, test-data `fixtures` dirs,
     and any directory holding a `.specgate-skip` file.
@@ -40,7 +50,7 @@ def iter_py_files(directory: str) -> list[Path]:
     """
     found: list[Path] = []
     for root, dirs, files in os.walk(directory):
-        if SKIP_MARKER in files:
+        if SKIP_MARKER in files or (root != directory and is_nested_repo(Path(root))):
             dirs[:] = []
             continue
         dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS and d != "fixtures")

@@ -10,7 +10,8 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-from specgate.l2_trace import SKIP_DIRS, MarkerLocation, _extract_functions, get_marker_map
+from specgate.l2_trace import (SKIP_DIRS, MarkerLocation, _extract_functions, get_marker_map,
+                               is_nested_repo)
 
 MUTATION_TYPES = ("cmp_flip", "bool_flip", "return_none", "arith_swap")
 
@@ -145,7 +146,13 @@ class _Sandbox:
         self.root = Path(os.path.commonpath([str(p.parent) for p in reals]))
         self._tmp = tempfile.TemporaryDirectory()
         self.copy = Path(self._tmp.name) / "tree"
-        shutil.copytree(self.root, self.copy, ignore=shutil.ignore_patterns(*SKIP_DIRS))
+        skip = shutil.ignore_patterns(*SKIP_DIRS)
+
+        def ignore(folder: str, names: list[str]) -> set[str]:
+            nested = {n for n in names if Path(folder, n) != self.root and is_nested_repo(Path(folder, n))}
+            return set(skip(folder, names)) | nested
+
+        shutil.copytree(self.root, self.copy, ignore=ignore)
         roots = sorted({str(_import_root(self.map(p))) for p in reals})
         env = {k: v for k, v in os.environ.items()
                if not k.startswith("COVERAGE") and k not in _GIT_VARS}

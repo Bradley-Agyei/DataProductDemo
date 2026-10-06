@@ -1,14 +1,19 @@
-# Vendored: specgate
+# specgate (owned by this repo)
 
-A copy of `plugins/specgate` (source, schema, pyproject; not its tests) from
-<https://github.com/josephrobertlopez/harness-engineering-demo>, commit
-`b84df18` on branch `fix/specgate-portable`
-([PR #6](https://github.com/josephrobertlopez/harness-engineering-demo/pull/6)).
+The spec gate this repo runs: PRD schema, static checks, AC traceability,
+tests, per-AC coverage and mutation (L0-L5). It started as a copy of
+`plugins/specgate` from harness-engineering-demo (commit `b84df18`) and is now
+maintained here; there is no upstream to sync with.
 
-Kept inside this repo on purpose: the gates must run with no network fetch of
-the gate itself, and a PR here cannot quietly move the gate to another version.
+Changes made here since the copy:
+
+- Directories holding their own `.git` (worktrees, submodules, clones) are
+  never walked or copied into the L5 sandbox. A worktree kept in a gitignored
+  folder doubled every AC's markers.
+
+Rules:
 
 - `.specgate-skip` keeps specgate's own `# implements:` markers out of this
   repo's AC trace. Do not delete it.
-- Do not edit these files in place. Fix upstream, then re-copy and update the
-  commit above, so the two never silently diverge.
+- specgate has no tests of its own in this repo; a change here is checked by
+  running the gate on `openspec/changes/left-shift-gates` (L0-L5) before merge.

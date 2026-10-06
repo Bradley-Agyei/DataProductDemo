@@ -47,16 +47,27 @@ def git(repo: str, *args: str) -> str:
 
 
 # implements: AC-1
-def raw_changes(repo: str, base: str | None) -> list[str]:
+def raw_changes(repo: str, base: str | None, since: str = "HEAD") -> list[str]:
     """`<status>\\t<path>` for every difference under data/raw.
 
-    Against `base`, the changes this branch made since it left base; without
-    it, the staged index against HEAD. --no-renames makes a file moved out of
-    data/raw show up as a deletion instead of disappearing from the diff.
+    Against `base`, the changes this branch committed since it left base;
+    without it, the staged index against `since` -- HEAD, or the branch's
+    fork point, so a commit made earlier with --no-verify is still caught.
+    --no-renames makes a file moved out of data/raw a deletion, not a rename.
     """
-    span = [f"{base}...HEAD"] if base else ["--cached", "HEAD"]
+    span = [f"{base}...HEAD"] if base else ["--cached", since]
     out = git(repo, "diff", "--name-status", "--no-renames", *span, "--", RAW)
     return [line for line in out.splitlines() if line.strip()]
+
+
+def fork_point(repo: str) -> str:
+    """Where this branch left the base branch (LEFTSHIFT_BASE, upstream/main, origin/main)."""
+    for base in filter(None, (os.environ.get("LEFTSHIFT_BASE"), "upstream/main", "origin/main")):
+        try:
+            return git(repo, "merge-base", "HEAD", base).strip()
+        except subprocess.CalledProcessError:
+            continue
+    return "HEAD"
 
 
 def _normalise(column: str) -> str:
@@ -136,14 +147,47 @@ def kt_docs(changed: list[str]) -> list[str]:
     return [p for p in changed if p.startswith(KT)]
 
 
+def run_tests(repo: str) -> int:
+    """The repo's unittest suite, then each data product's own pytest suite.
+
+    A product directory (`output/*/04_code` with a pytest.ini) must declare its
+    dependencies in requirements.txt. Nothing is installed here: the gate
+    runs offline, and CI installs the same file before calling this.
+    """
+    code = subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", "tests", "-t", "."],
+                          cwd=repo, check=False).returncode
+    if code != 0:
+        return code
+    for ini in sorted(Path(repo).glob("output/*/04_code/pytest.ini")):
+        product = ini.parent
+        rel = product.relative_to(repo).as_posix()
+        if not (product / "requirements.txt").is_file():
+            sys.stderr.write(f"FAIL: {rel} has tests but no requirements.txt\n")
+            return 1
+        sys.stdout.write(f"pytest {rel}\n")
+        sys.stdout.flush()
+        code = subprocess.run([sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider"],
+                              cwd=product, check=False).returncode
+        if code != 0:
+            sys.stderr.write(f"FAIL: {rel} tests (install: python -m pip install -r {rel}/requirements.txt)\n")
+            return code
+    return 0
+
+
 def run_specgate(repo: str, layers: str, stage: bool) -> int:
     """specgate on every change with a prd.md; with `stage`, write and stage its trace.json.
 
     Staging the trace here, before the attestation's digest is taken, is what
     keeps a regenerated trace from making a fresh attestation stale.
     """
+    changes = Path(repo, "openspec", "changes")
+    for untraced in sorted(d for d in changes.glob("*/") if d.name != "archive" and not (d / "prd.md").exists()):
+        # Said out loud rather than skipped in silence: a green spec-gate on a
+        # change with no PRD checked its OpenSpec structure and nothing else.
+        sys.stdout.write(f"NOT TRACED: {untraced.relative_to(repo).as_posix()} has no prd.md; "
+                         f"OpenSpec structure is checked, AC traceability (specgate) is not\n")
     with tempfile.TemporaryDirectory() as scratch:
-        for prd in sorted(Path(repo, "openspec", "changes").glob("*/prd.md")):
+        for prd in sorted(changes.glob("*/prd.md")):
             change = prd.parent.relative_to(repo).as_posix()
             out = f"{change}/trace.json" if stage else str(Path(scratch, f"{prd.parent.name}.json"))
             sys.stdout.write(f"specgate {layers} {change}\n")
@@ -174,11 +218,14 @@ def main(argv: list[str] | None = None) -> int:
     raw = sub.add_parser("raw")
     raw.add_argument("--base")
     raw.add_argument("--staged", action="store_true")
+    raw.add_argument("--branch", action="store_true",
+                     help="with --staged: compare against the branch's fork point, not HEAD")
     pii = sub.add_parser("pii")
     pii.add_argument("--rev", default="HEAD")
     sub.add_parser("scenarios")
     kt = sub.add_parser("kt-docs")
     kt.add_argument("--base", required=True)
+    sub.add_parser("tests")
     gate = sub.add_parser("specgate")
     gate.add_argument("--layers", default="L0-L2")
     gate.add_argument("--stage", action="store_true")
@@ -187,11 +234,14 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.check == "specgate":
         return run_specgate(repo, args.layers, args.stage)
+    if args.check == "tests":
+        return run_tests(repo)
     if args.check == "raw":
         if not args.staged and not args.base:
             parser.error("raw needs --staged or --base")
-        diff = raw_changes(repo, None if args.staged else args.base)
-        where = "staged" if args.staged else f"since {args.base}"
+        since = fork_point(repo) if args.branch else "HEAD"
+        diff = raw_changes(repo, None if args.staged else args.base, since)
+        where = f"staged, since {since[:12]}" if args.staged else f"since {args.base}"
         return _report(not diff, f"{RAW} unchanged ({where})",
                        f"{RAW} is read-only and was changed ({where})", diff)
     if args.check == "pii":
