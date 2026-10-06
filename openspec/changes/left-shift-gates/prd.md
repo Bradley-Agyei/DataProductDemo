@@ -10,6 +10,7 @@ acs:
       - "test_leftshift.TestRawIsReadOnly.test_staged_edit_is_reported"
       - "test_leftshift.TestRawIsReadOnly.test_moving_a_file_out_of_raw_is_a_deletion_not_a_rename"
       - "test_leftshift.TestRawIsReadOnly.test_branch_against_base"
+      - "test_leftshift.TestRawAcrossTheBranch.test_an_earlier_no_verify_commit_is_caught_from_the_fork_point"
   - id: AC-2
     given: "a tracked CSV outside data/raw whose header names first_name, last_name, postal_code or a respelling of them"
     when: "the pii check runs on the index or on a commit"
@@ -41,13 +42,15 @@ acs:
       - "test_leftshift.TestMake.test_a_red_gate_stops_before_the_review"
       - "test_leftshift.TestMake.test_a_verified_high_finding_fails_and_is_not_staged"
       - "test_leftshift.TestMake.test_a_high_finding_that_points_at_nothing_is_ignored"
+      - "test_leftshift.TestMake.test_a_finding_on_a_binary_file_is_ignored_not_a_crash"
       - "test_leftshift.TestMake.test_an_oversized_change_is_refused_not_truncated"
   - id: AC-6
-    given: "staged files under data/, CSVs anywhere in any letter case, .attestations/ and the vendored gate"
+    given: "a branch whose changes since it left the base branch include files under data/, CSVs in any letter case, binary files, .attestations/ and the vendored gate"
     when: "the review prompt is built"
-    then: "none of their content reaches the model"
+    then: "it covers every file the branch changed, not only the commit being made, and none of the excluded or binary content reaches the model; binary files are named only"
     tests:
       - "test_leftshift.TestPromptNeverSeesData.test_data_csv_attestations_and_vendored_gate_are_withheld"
+      - "test_leftshift.TestPromptNeverSeesData.test_the_review_covers_the_whole_branch_not_just_this_commit"
   - id: AC-7
     given: "a pull request head commit"
     when: "attest verify runs in CI, which never calls a model"

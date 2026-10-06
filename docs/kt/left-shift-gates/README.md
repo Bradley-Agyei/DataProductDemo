@@ -55,8 +55,29 @@ It never calls a model.
 - **Rebasing makes the attestation stale.** The digest covers the whole tree, so commit again (or `git commit --amend`) to re-attest.
 - **`attest` proves the run happened; it does not prove honesty.** The digest is a public function of the tree, so a determined person could hand-write the JSON. That is why `.attestations/` is in `CODEOWNERS`.
 - **`openspec validate --strict` accepts a requirement with no scenario.** We checked against a real change, so `checks.py scenarios` enforces it instead.
-- **Vendored specgate.** `tools/specgate/` is a vendored copy (see `VENDORED.md`). Its `.specgate-skip` keeps its own `# implements:` markers out of this repo's trace. Fix specgate upstream, then re-copy it.
+- **specgate lives here.** `tools/specgate/` is owned by this repo (see `VENDORED.md` for where it came from and what changed). Its `.specgate-skip` keeps its own `# implements:` markers out of this repo's trace, and it never walks into a directory with its own `.git`, so a worktree kept inside the repo does not double the trace.
+- **A change with no `prd.md` is not traced.** spec-gate prints `NOT TRACED: <change> has no prd.md`. Its OpenSpec structure and scenarios are checked; AC-to-test traceability is not.
+- **The review covers the whole branch.** `attest make` reviews every file changed since the branch left `upstream/main` (or `origin/main`; set `LEFTSHIFT_BASE` to override), not just the commit being made. Binary files (xlsx, docx) are named but never sent.
 - **Tests that create git repos must strip `GIT_DIR`, `GIT_WORK_TREE` and `GIT_INDEX_FILE`.** Inside a hook those point at this repo.
+
+## Making the checks required
+
+Until a ruleset is set, a red check is advice. A repository admin applies [`ruleset.json`](ruleset.json) once:
+
+```bash
+gh api -X POST repos/Bradley-Agyei/DataProductDemo/rulesets --input docs/kt/left-shift-gates/ruleset.json
+```
+
+It requires all five checks on an up-to-date branch, a PR with one approval from a code owner who is not the last pusher, and it blocks force-pushes and deleting `main`. Admins can bypass, but only through a PR, and that shows in the audit log.
+
+- **"Up to date" protects the attestation.** When the head already contains `main`, a merge or squash produces exactly the attested tree.
+- **A solo maintainer cannot approve their own push.** Someone else must review.
+
+`actor_id` 5 is the admin repository role. GitHub's REST docs do not list role ids; the value comes from the Terraform provider docs.
+
+## After a merge
+
+A clean `git merge` does not run the pre-commit hook, so the merge commit carries no fresh attestation. The next commit re-attests, or run `git commit --amend --no-edit` to attest the merge itself.
 
 ## Run CI locally
 
