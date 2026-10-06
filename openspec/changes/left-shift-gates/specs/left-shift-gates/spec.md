@@ -48,7 +48,11 @@ The system SHALL, as the last pre-commit step, run the gates and stop at the fir
 - **THEN** the attestation is written with state TASK_STATE_FAILED and is not staged
 
 ### Requirement: The model never sees data
-The system SHALL build the review prompt only from staged files outside `data/`, excluding every CSV in any letter case, `.attestations/` and the vendored gate. (AC-6)
+The system SHALL build the review prompt from every file the branch changed since it left the base branch, outside `data/`, excluding every CSV in any letter case, `.attestations/` and the vendored gate, and SHALL name binary files without sending their content. (AC-6)
+
+#### Scenario: A merge then a small fix is still reviewed whole
+- **WHEN** a branch merges the base branch and then commits a one-line fix
+- **THEN** the prompt contains every file the branch changed, not only the fix
 
 #### Scenario: Staged data is withheld
 - **WHEN** files under `data/` and CSV files are staged alongside code

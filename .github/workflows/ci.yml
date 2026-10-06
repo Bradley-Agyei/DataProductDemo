@@ -22,8 +22,15 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      - name: Unit tests
-        run: python -m unittest discover -s tests -t . -v
+      # Each data product declares its dependencies next to its tests; the
+      # gate itself installs nothing, so the same command runs offline locally.
+      - name: Install data product test dependencies
+        shell: bash
+        run: |
+          shopt -s nullglob
+          for req in output/*/04_code/requirements.txt; do python -m pip install -q -r "$req"; done
+      - name: Unit tests and data product tests
+        run: python tools/leftshift/checks.py tests
       # Same commands lefthook runs before the commit, here against the base
       # branch so they cannot be skipped with --no-verify.
       - name: data/raw is read-only

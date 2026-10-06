@@ -7,19 +7,19 @@
         {
           "data": {
             "evaluator": {
-              "costUsd": 0.33548560000000005,
+              "costUsd": 0.334562,
               "model": "claude-sonnet-5",
-              "sessionId": "a8de9733-6910-46c7-99bc-b63c83b79c0c"
+              "sessionId": "11dc6d2d-71f4-4c70-8eb9-332b1d641c83"
             },
             "findings": {
               "unverified": [],
               "verified": [
                 {
-                  "ac": "AC-4",
-                  "claim": "The kt-docs failure message tells the author to 'add or change' a file under docs/kt/, omitting that a rename also satisfies the check (the underlying changed_files/kt_docs logic correctly includes renames via --diff-filter=AMR, but the printed guidance does not mention it), which can mislead a developer reading the failure.",
-                  "file": "tools/leftshift/checks.py",
-                  "line": 207,
-                  "quote": "the PR must add or change a file under",
+                  "ac": "AC-7",
+                  "claim": "trace.json lists test_not_json as covering AC-7 (and the test itself carries '# covers: AC-7'), but the prd.md frontmatter's AC-7 `tests` list omits it, so the PRD's declared test list and the trace/test-tagging are out of sync.",
+                  "file": "openspec/changes/left-shift-gates/trace.json",
+                  "line": 213,
+                  "quote": "test_not_json",
                   "severity": "LOW"
                 }
               ]
@@ -51,15 +51,21 @@
               }
             ],
             "modelVerdict": "pass",
-            "promptSha256": "b49cd96c7b1b7471516e4f7e5f16d3355d614443708bb3086b096b38e56e98bf",
+            "promptSha256": "680f93bec481f3e14f082d1449e82dde7e4bd64e467ea27e97fc2678dc5cce62",
+            "review": {
+              "base": "0e59338b3b395cd6759865113919d9caeb8e7a3f",
+              "binaryFiles": 0,
+              "chars": 93015,
+              "files": 11
+            },
             "subject": {
               "algo": "sha256",
-              "digest": "98001f13b8aefc380e27be6ec48118bc791e2b8518324974d9be44567e1669e2",
+              "digest": "5328d24f5ba331b0e8355ce6267f68529e33ce36bc291914892a456742d02564",
               "excludes": [
                 ".attestations/"
               ]
             },
-            "summary": "The staged left-shift-gates implementation (checks.py, attest.py, workflows, spec, and tests) closely matches every AC's given/when/then, and the trace.json line references, gate wiring, and PII/raw/scenario/kt-docs/attest logic all check out against the tests that cover them. The only issue found is a cosmetic wording gap in the kt-docs failure message that omits \"renames\" even though the check itself correctly honors renamed files.",
+            "summary": "The implementation (checks.py, attest.py) and its tests line up closely with every AC: raw/PII/scenario/kt-docs checks, the make/verify attestation flow, and the branch-wide, data-withholding review prompt all behave as specified, and no code path writes, copies or prints raw/PII values. The only issue found is a low-severity documentation drift: trace.json credits test_not_json toward AC-7 coverage even though the PRD frontmatter's AC-7 test list doesn't mention it.",
             "verdict": "pass"
           },
           "mediaType": "application/json"
@@ -70,23 +76,23 @@
   "contextId": "left-shift",
   "history": [
     {
-      "messageId": "msg-d2fa6e5f-2290-4d27-8e87-aacf0bb0673f",
+      "messageId": "msg-f08fbf5e-482f-4e2f-b5d4-af4b66a72cea",
       "parts": [
         {
-          "text": "review the staged change against its acceptance criteria; prompt sha256 b49cd96c7b1b7471516e4f7e5f16d3355d614443708bb3086b096b38e56e98bf"
+          "text": "review the staged change against its acceptance criteria; prompt sha256 680f93bec481f3e14f082d1449e82dde7e4bd64e467ea27e97fc2678dc5cce62"
         }
       ],
       "role": "ROLE_USER"
     }
   ],
-  "id": "att-556e0719-d08b-4b1c-92ae-24583ee51226",
+  "id": "att-cdff4af4-fb13-4eb3-aaff-0e5e2dce510e",
   "metadata": {
     "a2aVersion": "1.0.0",
     "producer": "tools/leftshift/attest.py"
   },
   "status": {
     "message": {
-      "messageId": "msg-bce2e4eb-0c2e-4cf2-9ed2-a6350c4e7272",
+      "messageId": "msg-fb4341c0-6920-400e-9745-39b785e2addf",
       "parts": [
         {
           "text": "verdict: pass (0 verified HIGH findings)"
@@ -95,6 +101,6 @@
       "role": "ROLE_AGENT"
     },
     "state": "TASK_STATE_COMPLETED",
-    "timestamp": "2026-10-06T17:23:20Z"
+    "timestamp": "2026-10-06T18:34:30Z"
   }
 }

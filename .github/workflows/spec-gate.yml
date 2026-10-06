@@ -40,13 +40,43 @@ jobs:
   attest:
     runs-on: ubuntu-24.04
     steps:
-      # The PR head, not the merge ref: the attestation is bound to the tree
-      # the author committed, and the merge ref's tree differs from it.
+      # The verifier comes from the base branch, never from the PR: a PR that
+      # could edit attest.py could make it pass anything. It then checks the
+      # PR head, not the merge ref, because the attestation is bound to the
+      # tree the author committed.
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.base.sha }}
+      # Pinned to the SHA this run is reporting on: refs/pull/N/head moves on
+      # every push, and a quick second push must not get verified in its place.
+      - name: Fetch the PR head
+        shell: bash
+        env:
+          PR: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          if [ -z "$PR" ]; then  # act: no PR, verify the local checkout
+            git update-ref refs/remotes/pr/head HEAD; exit 0
+          fi
+          git fetch --no-tags origin "+refs/pull/$PR/head:refs/remotes/pr/head"
+          if [ "$(git rev-parse pr/head)" != "$HEAD_SHA" ]; then
+            echo "attest: the PR moved to $(git rev-parse --short pr/head) after this run started; the run for that push verifies it" >&2
+            exit 1
+          fi
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: The local left-shift run happened on this exact tree
-        run: python tools/leftshift/attest.py verify --rev HEAD
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f tools/leftshift/attest.py ]; then
+            # Bootstrap only: the PR that introduces the gates has no base copy.
+            git checkout -q pr/head
+          fi
+          if ! git cat-file -e pr/head:tools/leftshift/attest.py 2>/dev/null; then
+            echo "attest: the PR branch predates the left-shift gates. Merge the base branch into it," >&2
+            echo "then commit through the hook (see docs/kt/left-shift-gates/README.md)." >&2
+          fi
+          python tools/leftshift/attest.py verify --rev pr/head
