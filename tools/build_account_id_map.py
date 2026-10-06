@@ -15,6 +15,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = PROJECT_ROOT / "data" / "raw"
+PRODUCT_DIR = PROJECT_ROOT / "data" / "product"
 MAP_PATH = PROJECT_ROOT / "data" / "reference" / "account_id_map.csv"
 
 CANONICAL_DIGITS = 7
@@ -29,12 +30,14 @@ class SourceSystem:
     name: str
     file_name: str
     id_column: str
+    # None means the --raw-dir folder. The fraud extract is not a data/raw feed.
+    source_dir: Path | None = None
 
 
 # Core banking first: it decides in_core_banking for every other system.
 SYSTEMS = (
     SourceSystem(CORE_SYSTEM, "Account.csv", "account_id"),
-    SourceSystem("fraud_case_mgmt", "DP_Fraud_Case.csv", "primary_account_id"),
+    SourceSystem("fraud_case_mgmt", "DP_Fraud_Case.csv", "primary_account_id", PRODUCT_DIR),
 )
 
 
@@ -76,7 +79,7 @@ def build_rows(ids_by_system: dict[str, list[str]]) -> tuple[list[dict], list[di
 def read_source_ids(raw_dir: Path = RAW_DIR) -> dict[str, list[str]]:
     ids = {}
     for s in SYSTEMS:
-        with open(raw_dir / s.file_name, newline="", encoding="utf-8-sig") as f:
+        with open((s.source_dir or raw_dir) / s.file_name, newline="", encoding="utf-8-sig") as f:
             values = [r[s.id_column] for r in csv.DictReader(f)]
         # Core banking keeps file order; other systems are sorted for a stable diff.
         ids[s.name] = values if s.name == CORE_SYSTEM else sorted(set(values))
