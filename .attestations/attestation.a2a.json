@@ -7,22 +7,13 @@
         {
           "data": {
             "evaluator": {
-              "costUsd": 0.1274276,
+              "costUsd": 0.1327736,
               "model": "claude-haiku-4-5-20251001",
-              "sessionId": "64e3a828-e92d-4a5c-b0f3-4fc3c13a4cd2"
+              "sessionId": "103ecda8-40af-470c-85cf-6c741c1e2872"
             },
             "findings": {
               "unverified": [],
-              "verified": [
-                {
-                  "ac": "AC-2",
-                  "claim": "README says the .db file and out/ are git-ignored, but the root .gitignore shown has no entry for them. A nested ignore file may exist, but none is in this change, so landed raw tables could be committed.",
-                  "file": "output/DP_Payment_Transaction/04_code/README.md",
-                  "line": 15,
-                  "quote": "git-ignored anyway",
-                  "severity": "LOW"
-                }
-              ]
+              "verified": []
             },
             "gates": [
               {
@@ -51,21 +42,21 @@
               }
             ],
             "modelVerdict": "pass",
-            "promptSha256": "d5acea7ae5a27d8dd73d1f6a39ea8a213ce3d97abcd48830a24894564d196f71",
+            "promptSha256": "57ff09afabd1665a0b42eef13ad7ba9fc96874250b79caeba131a0f6e645c16f",
             "review": {
-              "base": "a17bf1ee5f6766e538b6b7e01dbfe5dd365e0d4d",
+              "base": "d8dc5ef08041cd5c7b0ed6c794864472171d8319",
               "binaryFiles": 0,
-              "chars": 56840,
+              "chars": 59587,
               "files": 28
             },
             "subject": {
               "algo": "sha256",
-              "digest": "1771b1d3b3afc12523e1c425e7f0adac1b6ec733f9d5e738cdc43923b58a4ca3",
+              "digest": "bbf6f77711fd836016576e42a02b8d2bccde430d558ae9a00f71676a0b386321",
               "excludes": [
                 ".attestations/"
               ]
             },
-            "summary": "The change touches only docs, the wiki scaffold, contracts and tests, not the left-shift gate code, and I found no HIGH issue. The tests I read assert only on counts and key values and never PII values. One LOW note: a README claim that the .db file and out/ are git-ignored isn't backed by the root .gitignore.",
+            "summary": "The change adds the llm-wiki skill, aligns the Payment Transaction contracts to the PRD, and adds tests and docs; it doesn't touch the left-shift gate code, so none of AC-1 to AC-7 are affected. I found no problems I could point at in the staged files.",
             "verdict": "pass"
           },
           "mediaType": "application/json"
@@ -76,23 +67,23 @@
   "contextId": "left-shift",
   "history": [
     {
-      "messageId": "msg-65c8307c-3500-4725-8168-8d175f590bbe",
+      "messageId": "msg-9f43baed-3124-4dd8-8fda-0d6049f792f9",
       "parts": [
         {
-          "text": "review the staged change against its acceptance criteria; prompt sha256 d5acea7ae5a27d8dd73d1f6a39ea8a213ce3d97abcd48830a24894564d196f71"
+          "text": "review the staged change against its acceptance criteria; prompt sha256 57ff09afabd1665a0b42eef13ad7ba9fc96874250b79caeba131a0f6e645c16f"
         }
       ],
       "role": "ROLE_USER"
     }
   ],
-  "id": "att-416597be-1ac5-40ff-8791-ca4b8a16f91f",
+  "id": "att-61de6338-51e9-48b9-ae67-871a9d55f440",
   "metadata": {
     "a2aVersion": "1.0.0",
     "producer": "tools/leftshift/attest.py"
   },
   "status": {
     "message": {
-      "messageId": "msg-f145ffba-2732-435f-af8e-c34a2954e765",
+      "messageId": "msg-ff0d95fc-5ac7-4f4f-9102-bd25d2035150",
       "parts": [
         {
           "text": "verdict: pass (0 verified HIGH findings)"
@@ -101,6 +92,6 @@
       "role": "ROLE_AGENT"
     },
     "state": "TASK_STATE_COMPLETED",
-    "timestamp": "2026-10-08T20:44:32Z"
+    "timestamp": "2026-10-08T21:21:22Z"
   }
 }

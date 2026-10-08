@@ -35,12 +35,16 @@ def is_pii_column(name: str) -> bool:
 # Balances are DECIMAL(15,2); equality checks allow half a cent for float inputs.
 AMOUNT_TOLERANCE = 0.005
 
+# FR-04 (Q2, open: Finance confirm): the first day opens at this Account column.
+# current_balance is the balance before the first sample transaction on 10 of 10 accounts.
+FIRST_DAY_OPENING_COLUMN = "current_balance"
+
 CONTRACT_META = {
     "version": "0.1",
     "owner": "Product Owner - Finance & Reporting Data",
     "refresh": "Daily full rebuild, ready by 07:00 ET",
     "change_policy": "New columns are additive; type changes need 30 days' notice",
     "source_prd": "output/DP_Account_Daily_Balance/PRD_Account_Daily_Balance.md",
-    "jira": "SCRUM-35 (FR-07: SCRUM-43)",
+    "jira": "SCRUM-35 (FR-04: SCRUM-40, FR-07: SCRUM-43)",
     "pii": "None published; any PII value is masked with * before write",
 }
