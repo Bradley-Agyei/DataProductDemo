@@ -31,6 +31,13 @@
                   "severity": "LOW"
                 }
               ]
+              "costUsd": 0.1929476,
+              "model": "claude-haiku-4-5-20251001",
+              "sessionId": "9ed6ac78-b9cd-49a4-81c1-958850ac6552"
+            },
+            "findings": {
+              "unverified": [],
+              "verified": []
             },
             "gates": [
               {
@@ -69,11 +76,22 @@
             "subject": {
               "algo": "sha256",
               "digest": "4601fd18f7c684b54b4f4889688bb1bace01bc8943ce172fd5e08689a41d4d1c",
+            "promptSha256": "faaf84b90426febe244ac6ccc25daa9c33152ac73ba4446a3e87d58bc36c97e6",
+            "review": {
+              "base": "04232dfb0c82c6372e02ca98345ec0d8330011b5",
+              "binaryFiles": 0,
+              "chars": 89950,
+              "files": 37
+            },
+            "subject": {
+              "algo": "sha256",
+              "digest": "bc29ac2bcfaa3be6017aa988c74e554b6ca6f5a3df905438659378e040cf8adb",
               "excludes": [
                 ".attestations/"
               ]
             },
             "summary": "The staged change is documentation only, so none of the left-shift-gates ACs are contradicted and no data values appear in it. One low-severity inconsistency: Member city is PII per the PRD but is not masked in the raw layer.",
+            "summary": "The staged change adds the Account Daily Balance publish step, with its docs and tests. It adds no left-shift-gates code, so AC-1 to AC-7 have nothing in this diff to contradict, and I found no HIGH issues.",
             "verdict": "pass"
           },
           "mediaType": "application/json"
@@ -88,12 +106,17 @@
       "parts": [
         {
           "text": "review the staged change against its acceptance criteria; prompt sha256 82ef9e5687b31a8be42ea4efe5167e708b1f56ea4d01ad3ebe2fa8360f728590"
+      "messageId": "msg-3c8a060a-8082-4364-9aa6-32b7d7d4c1ca",
+      "parts": [
+        {
+          "text": "review the staged change against its acceptance criteria; prompt sha256 faaf84b90426febe244ac6ccc25daa9c33152ac73ba4446a3e87d58bc36c97e6"
         }
       ],
       "role": "ROLE_USER"
     }
   ],
   "id": "att-a034d804-6bae-413d-a43a-5d895c50845e",
+  "id": "att-fc124beb-0631-44b0-8f82-712e58a3ab13",
   "metadata": {
     "a2aVersion": "1.0.0",
     "producer": "tools/leftshift/attest.py"
@@ -101,6 +124,7 @@
   "status": {
     "message": {
       "messageId": "msg-0a7640e3-5c5a-40e3-94e4-f4a56a63c829",
+      "messageId": "msg-64f7e216-1ca1-4651-9617-aed95e44582c",
       "parts": [
         {
           "text": "verdict: pass (0 verified HIGH findings)"
@@ -110,5 +134,6 @@
     },
     "state": "TASK_STATE_COMPLETED",
     "timestamp": "2026-10-08T18:31:21Z"
+    "timestamp": "2026-10-08T18:14:18Z"
   }
 }
