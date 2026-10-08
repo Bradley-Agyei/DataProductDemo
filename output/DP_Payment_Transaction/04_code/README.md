@@ -2,7 +2,7 @@
 
 Payment Transaction data product (Jira epic SCRUM-36). Built on the shared `dp_framework`, the same as `DP_Member_360` and `DP_Fraud_Case`.
 
-Only FR-01 is built so far, under SCRUM-44.
+Only FR-01 is built so far, under SCRUM-44. The requirements are in the PRD, `../PRD_Payment_Transaction.md`.
 
 ## FR-01 Ingest transaction extracts (SCRUM-44)
 
