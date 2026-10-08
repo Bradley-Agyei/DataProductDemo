@@ -8,6 +8,7 @@ Only **FR-07, publish (SCRUM-43)**, exists so far. It's the last step of the pip
 
 | Piece | What it does | Start here |
 |---|---|---|
+| `output/DP_Account_Daily_Balance/PRD_Account_Daily_Balance.md` | PRD: target schema, mapping, FR-01 to FR-07, DQ rules, open questions | sections 6, 8 and 10 |
 | `output/DP_Account_Daily_Balance/04_code/` | Contract, publish step, DQ rules and tests | `04_code/README.md` |
 | `openspec/changes/scrum-43-account-daily-balance-publish/` | FR-07 requirements and scenarios | `proposal.md` |
 | Jira SCRUM-37 to SCRUM-42 | FR-01 to FR-06: ingest, standardize, totals, roll-forward, overdraft, attributes | the stories |
@@ -27,9 +28,9 @@ Only **FR-07, publish (SCRUM-43)**, exists so far. It's the last step of the pip
 
 ## Things to know
 
-- **No PRD in the repo.** The epic points to `output/DP_Account_Daily_Balance/PRD_Account_Daily_Balance.md`, which isn't committed. The contract comes from the epic's target-schema table.
-  - DQ-01 to 04 are assumed to follow the house pattern.
-  - The 11 sample columns are assumed to be the first 11 schema columns.
-  - Check both assumptions when the PRD lands.
+- **PRD.** `PRD_Account_Daily_Balance.md` (Draft v0.1) is the spec. The contract follows §6, and the DQ rules follow §10. DQ-07 reconciles credits and debits separately. Things to know when reading it against the code:
+  - **Paths.** The PRD writes `sources/data/raw/` and `data/output/product/`. The repo uses `data/raw/` and `data/product/`.
+  - **No sample yet.** The target sample is shape only (Q1) and isn't committed, so the header test uses the first 11 columns in §6.
+  - **Not traced yet.** The OpenSpec change has no `prd.md`, so spec-gate doesn't trace the ACs.
 - **Pending columns.** `product_code` (Q6) and `available_balance` (Q5) are `pending`, so they're published as NULL until their stories are unblocked.
 - **No end-to-end run yet.** The story's verify step (sample run, 100 rows) needs FR-01 to FR-06. Until then, publishing is tested on a 2-account, 3-day fixture in `tests/conftest.py`.
