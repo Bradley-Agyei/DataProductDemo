@@ -1,1 +1,1 @@
-"""Contracts for the Account Daily Balance product (target schema from Jira epic SCRUM-35)."""
+"""Contracts for the Account Daily Balance product (PRD_Account_Daily_Balance.md §6)."""

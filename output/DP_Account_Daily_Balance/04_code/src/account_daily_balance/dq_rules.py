@@ -1,4 +1,4 @@
-"""Product DQ rules for Account Daily Balance, on top of the framework rule factories.
+"""Product DQ rules for Account Daily Balance (PRD §10), on top of the framework rule factories.
 
 Critical (block publish): DQ-01 to DQ-07 and DQ-10. DQ-11 is a warning.
 DQ-08/09 are reject rules owned by FR-02/FR-03, DQ-12/13 warnings by FR-05/FR-06;
@@ -53,13 +53,19 @@ def _available_above_closing(frames) -> pd.Series:
 
 
 def _reconciliation_breaks(counted: pd.DataFrame):
-    """Accounts whose net product movement differs from their counted source transactions."""
+    """Accounts whose credits or debits differ from their counted source transactions (PRD §10 DQ-07).
+
+    Credits and debits are reconciled separately, so offsetting errors cannot net to zero.
+    """
     def check(frames) -> int:
         df = frames[PRODUCT]
-        product_net = (_num(df["total_credits"]) - _num(df["total_debits"])).groupby(df["account_id"]).sum()
-        source_net = _num(counted["signed_amount"]).groupby(counted["account_id"]).sum()
-        diff = product_net.sub(source_net, fill_value=0).abs()
-        return int(diff.gt(config.AMOUNT_TOLERANCE).sum())
+        signed = _num(counted["signed_amount"])
+        source = pd.DataFrame({"credits": signed.clip(lower=0), "debits": (-signed).clip(lower=0),
+                               "account_id": counted["account_id"]}).groupby("account_id").sum()
+        product = pd.DataFrame({"credits": _num(df["total_credits"]), "debits": _num(df["total_debits"]),
+                                "account_id": df["account_id"]}).groupby("account_id").sum()
+        diff = product.sub(source, fill_value=0).abs()
+        return int(diff.gt(config.AMOUNT_TOLERANCE).any(axis=1).sum())
     return check
 
 
@@ -72,7 +78,7 @@ def product_rules(counted_transactions: pd.DataFrame) -> list[Rule]:
         allowed_values("DQ-04", ACCOUNT_DAILY_BALANCE, BLOCK),
         Rule("DQ-05", "closing = opening + credits - debits", PRODUCT, BLOCK, _closing_does_not_add_up),
         Rule("DQ-06", "opening = previous day's closing", PRODUCT, BLOCK, _opening_breaks_chain),
-        Rule("DQ-07", "credits - debits reconcile to counted source transactions per account", PRODUCT, BLOCK,
+        Rule("DQ-07", "credits and debits each reconcile to counted source transactions per account", PRODUCT, BLOCK,
              _reconciliation_breaks(counted_transactions)),
         Rule("DQ-10", "overdraft_flag = (closing_balance < 0)", PRODUCT, BLOCK, _overdraft_flag_wrong),
         Rule("DQ-11", "available_balance <= closing_balance", PRODUCT, WARN, _available_above_closing),

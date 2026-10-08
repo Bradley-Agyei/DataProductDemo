@@ -8,6 +8,7 @@
 
 | Piece | What it does | Start here |
 |---|---|---|
+| `output/DP_Account_Daily_Balance/PRD_Account_Daily_Balance.md` | PRD: target schema, mapping, FR-01 to FR-07, DQ rules, open questions | sections 6, 8 and 10 |
 | `output/DP_Account_Daily_Balance/04_code/` | Contract, publish step, roll-forward, DQ rules and tests | `04_code/README.md` |
 | `openspec/changes/scrum-40-account-daily-balance-roll-forward/` | FR-04 requirements and scenarios | `proposal.md` |
 | `openspec/changes/scrum-43-account-daily-balance-publish/` | FR-07 requirements and scenarios | `proposal.md` |
@@ -40,10 +41,10 @@
 
 ## Things to know
 
-- **PRD not on `develop` yet.** `output/DP_Account_Daily_Balance/PRD_Account_Daily_Balance.md` is on branch `feature/SCRUM-43-prd-and-dq07`, not yet merged. The contract comes from the epic's target-schema table.
-  - DQ-01 to 04 are assumed to follow the house pattern.
-  - The 11 sample columns are assumed to be the first 11 schema columns.
-  - Check both assumptions when the PRD lands.
+- **PRD.** `PRD_Account_Daily_Balance.md` (Draft v0.1) is the spec. The contract follows §6, and the DQ rules follow §10. DQ-07 reconciles credits and debits separately. Things to know when reading it against the code:
+  - **Paths.** The PRD writes `sources/data/raw/` and `data/output/product/`. The repo uses `data/raw/` and `data/product/`.
+  - **No sample yet.** The target sample is shape only (Q1) and isn't committed, so the header test uses the first 11 columns in §6.
+  - **Not traced yet.** The OpenSpec change has no `prd.md`, so spec-gate doesn't trace the ACs.
 - **Pending columns.** `product_code` (Q6) and `available_balance` (Q5) are `pending`, so they're published as NULL until their stories are unblocked.
 - **Assumptions awaiting sign-off:**
   - **Q2 (Finance):** `Account.current_balance` is the opening balance of the first day. Configurable in `config.FIRST_DAY_OPENING_COLUMN`.

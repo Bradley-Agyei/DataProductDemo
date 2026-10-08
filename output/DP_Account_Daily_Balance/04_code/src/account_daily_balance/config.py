@@ -5,8 +5,9 @@ from pathlib import Path
 CODE_DIR = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = CODE_DIR.parents[2]
 
-# The target sample (PRD Q1) is not committed yet. When it lands here, the CSV
-# header test compares against it instead of SAMPLE_COLUMNS.
+# The target sample is shape only (PRD Q1) and not committed yet; the PRD names it
+# data/output/product/, this repo keeps samples in data/product/. When it lands,
+# the CSV header test compares against it instead of SAMPLE_COLUMNS (PRD §6 order).
 SAMPLE_PRODUCT_CSV = PROJECT_ROOT / "data" / "product" / "DP_Account_Daily_Balance.csv"
 SAMPLE_COLUMNS = ("balance_date", "account_id", "member_id", "product_code", "account_status",
                   "opening_balance", "total_credits", "total_debits", "closing_balance",
@@ -43,7 +44,7 @@ CONTRACT_META = {
     "owner": "Product Owner - Finance & Reporting Data",
     "refresh": "Daily full rebuild, ready by 07:00 ET",
     "change_policy": "New columns are additive; type changes need 30 days' notice",
-    "source_prd": "output/DP_Account_Daily_Balance/PRD_Account_Daily_Balance.md (not yet in repo)",
+    "source_prd": "output/DP_Account_Daily_Balance/PRD_Account_Daily_Balance.md",
     "jira": "SCRUM-35 (FR-04: SCRUM-40, FR-07: SCRUM-43)",
     "pii": "None published; any PII value is masked with * before write",
 }

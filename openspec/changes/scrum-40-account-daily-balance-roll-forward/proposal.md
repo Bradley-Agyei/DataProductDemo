@@ -24,7 +24,7 @@ Out of scope:
 ## Source
 
 - Jira SCRUM-40.
-- PRD `output/DP_Account_Daily_Balance/PRD_Account_Daily_Balance.md`: §7 mapping, §8 FR-04, DQ-05 and DQ-06. The PRD is not on `develop` yet; it is in commit 888ad16 on `feature/SCRUM-43-prd-and-dq07`.
+- PRD `output/DP_Account_Daily_Balance/PRD_Account_Daily_Balance.md`: §7 mapping, §8 FR-04, DQ-05 and DQ-06 (§10), and open questions Q2, Q3 and Q7 (§11).
 
 ## Open questions, implemented as the PRD's proposed decisions
 

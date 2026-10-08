@@ -7,7 +7,7 @@ DP_Account_Daily_Balance (Jira epic SCRUM-35) must reach consumers only when it 
 ## What Changes
 
 - A new product folder, `output/DP_Account_Daily_Balance/04_code/`, on the shared `dp_framework`. Its framework copy is byte-identical to the other products'.
-- The contract `account_daily_balance`, with 15 columns taken from the epic's target schema. The key is `balance_date` + `account_id`. `product_code` (Q6) and `available_balance` (Q5) are pending.
+- The contract `account_daily_balance`, with the 15 columns from PRD §6. The key is `balance_date` + `account_id`. `product_code` (Q6) and `available_balance` (Q5) are pending.
 - `publish()`: it masks PII with `*`, runs the critical DQ gate (DQ-01 to 07 and DQ-10, which block) and the DQ-11 warning, then writes:
   - every run: rejects, DQ results, the exception report and the run log;
   - on SUCCESS only: the product table, the CSV and the data contract.
@@ -15,10 +15,11 @@ DP_Account_Daily_Balance (Jira epic SCRUM-35) must reach consumers only when it 
 
 Out of scope: FR-01 to FR-06 (SCRUM-37 to 42). They build the product frame and the counted transactions that `publish` takes. The story's end-to-end verify step (sample run, 100 rows) waits for them.
 
-## Assumptions (no PRD in the repo)
+## Source
 
-- DQ-01 to DQ-04 follow the house pattern: key unique and not null, ID patterns, required columns present, allowed values.
-- The 11 sample columns are the first 11 columns of the epic's target schema. The header test switches to `data/product/DP_Account_Daily_Balance.csv` when that file is added.
+`output/DP_Account_Daily_Balance/PRD_Account_Daily_Balance.md` (Draft v0.1) is added in this change. The contract follows PRD §6 and the DQ rules follow §10:
+- DQ-07 reconciles credits and debits separately.
+- The 11 sample columns are the first 11 columns in §6.
 
 ## Capabilities
 
@@ -27,5 +28,5 @@ Out of scope: FR-01 to FR-06 (SCRUM-37 to 42). They build the product frame and 
 
 ## Impact
 
-- New: `output/DP_Account_Daily_Balance/04_code/` and `docs/kt/account-daily-balance/README.md`.
+- New: `output/DP_Account_Daily_Balance/04_code/`, `output/DP_Account_Daily_Balance/PRD_Account_Daily_Balance.md` and `docs/kt/account-daily-balance/README.md`.
 - No change to the other products or to `dp_framework`.

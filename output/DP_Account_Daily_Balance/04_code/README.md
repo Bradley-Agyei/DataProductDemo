@@ -1,6 +1,6 @@
 # DP_Account_Daily_Balance: code
 
-Account Daily Balance data product (Jira epic SCRUM-35): one governed row per account per calendar day. Built on the shared `dp_framework`, the same as the other products.
+Account Daily Balance data product (Jira epic SCRUM-35, PRD `../PRD_Account_Daily_Balance.md`): one governed row per account per calendar day. Built on the shared `dp_framework`, the same as the other products.
 
 **FR-04 roll-forward (SCRUM-40)** and **FR-07 publish (SCRUM-43)** are built. FR-01 to FR-03 (SCRUM-37 to 39) and FR-05 to FR-06 (SCRUM-41 to 42) will complete the pipeline.
 
@@ -32,7 +32,7 @@ Tests in `tests/test_roll_forward.py`:
    - DQ-04: allowed values
    - DQ-05: closing = opening + credits − debits
    - DQ-06: opening = previous day's closing
-   - DQ-07: per-account reconciliation to the counted source transactions
+   - DQ-07: per account, credits and debits each reconcile to the counted source transactions
    - DQ-10: overdraft flag is set correctly
 
    DQ-11 (available ≤ closing) only warns.
@@ -43,10 +43,11 @@ Tests in `tests/test_roll_forward.py`:
 
 A rerun with the same inputs replaces the product with the same rows.
 
-## Assumptions to confirm (no PRD in the repo yet)
-- **DQ-01 to DQ-04** follow the house pattern used by Member 360 and Fraud Case.
-- **The 11 sample columns** are the first 11 columns of the epic's target schema (`config.SAMPLE_COLUMNS`). When `data/product/DP_Account_Daily_Balance.csv` lands, the header test checks against it instead.
-- **`product_code` and `available_balance` are `pending`** in the contract (Q6 and Q5), so they're published as NULL.
+## Checked against the PRD
+- **DQ-01 to DQ-04 and DQ-10** are as PRD §10 defines them.
+- **DQ-07** reconciles credits and debits separately, as PRD §10 says, so offsetting errors can't cancel out.
+- **The 11 sample columns** in `config.SAMPLE_COLUMNS` are the first 11 columns in PRD §6. The target sample is shape only (Q1) and isn't committed yet. When it lands in `data/product/DP_Account_Daily_Balance.csv`, the header test checks against it instead. The PRD names the folder `data/output/product/`.
+- **`product_code` and `available_balance` are `pending`** in the contract, because Q6 and Q5 block them. They're published as NULL.
 
 ## Run
 ```bash
