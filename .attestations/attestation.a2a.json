@@ -7,19 +7,27 @@
         {
           "data": {
             "evaluator": {
-              "costUsd": 0.1576116,
+              "costUsd": 0.0912506,
               "model": "claude-haiku-4-5-20251001",
-              "sessionId": "9a94d5b0-1e93-48d2-a602-fc5a40ed55ed"
+              "sessionId": "bca17291-c560-4765-af47-a49bb00a2025"
             },
             "findings": {
               "unverified": [],
               "verified": [
                 {
-                  "ac": "FR-01 spec: every source column has type TEXT",
-                  "claim": "The TEXT-type test only inspects raw_transaction, so the other six raw tables are not checked against the spec scenario 'every source column has type TEXT'.",
-                  "file": "output/DP_Payment_Transaction/04_code/tests/test_raw_ingest.py",
-                  "line": 69,
-                  "quote": "PRAGMA table_info(raw_transaction)",
+                  "ac": "AC-2",
+                  "claim": "The KT doc says Member city is marked PII in the PRD but is landed unmasked. That conflicts with the output README's claim that no PII appears in any product. Only a follow-up is noted, with no tracked fix.",
+                  "file": "docs/kt/payment-transaction/README.md",
+                  "line": 27,
+                  "quote": "It doesn't mask Member `city`, which \u00a75.7 marks as PII. That's worth a follow-up.",
+                  "severity": "LOW"
+                },
+                {
+                  "ac": "AC-1",
+                  "claim": "PRD FR-01 still says to load extracts unchanged, but the implementation masks PII values. The PRD wording is stale against the documented behaviour.",
+                  "file": "output/DP_Payment_Transaction/PRD_Payment_Transaction.md",
+                  "line": 250,
+                  "quote": "Load Transaction, Transaction_Type, Channel, Date, Branch, Account and Member unchanged into raw",
                   "severity": "LOW"
                 }
               ]
@@ -51,21 +59,21 @@
               }
             ],
             "modelVerdict": "pass",
-            "promptSha256": "4547d9ee322b0a29eed8d30c4dbb7d62ba8032632de03229dbbf2de1c76e91e3",
+            "promptSha256": "82ef9e5687b31a8be42ea4efe5167e708b1f56ea4d01ad3ebe2fa8360f728590",
             "review": {
-              "base": "1d88d3871dc069c401f77b921c1a1abac40b94d9",
+              "base": "04232dfb0c82c6372e02ca98345ec0d8330011b5",
               "binaryFiles": 0,
-              "chars": 73274,
-              "files": 30
+              "chars": 38347,
+              "files": 4
             },
             "subject": {
               "algo": "sha256",
-              "digest": "fe8e474c5fa6bbbd73d543df9ea57a9e67a53d7ef7bd40de02db1da2c54d8468",
+              "digest": "4601fd18f7c684b54b4f4889688bb1bace01bc8943ce172fd5e08689a41d4d1c",
               "excludes": [
                 ".attestations/"
               ]
             },
-            "summary": "The change adds the Payment Transaction FR-01 product and does not touch the left-shift gate code, so none of AC-1 to AC-7 is contradicted. PII is masked in memory before anything is written, and the manifest holds only counts and column names. I found one low-severity test gap.",
+            "summary": "The staged change is documentation only, so none of the left-shift-gates ACs are contradicted and no data values appear in it. One low-severity inconsistency: Member city is PII per the PRD but is not masked in the raw layer.",
             "verdict": "pass"
           },
           "mediaType": "application/json"
@@ -76,23 +84,23 @@
   "contextId": "left-shift",
   "history": [
     {
-      "messageId": "msg-9ab5abd6-fdaf-4235-ae71-91fd9eecee7d",
+      "messageId": "msg-eeb110ec-8dd1-4064-aa7e-31b8a5d2b23d",
       "parts": [
         {
-          "text": "review the staged change against its acceptance criteria; prompt sha256 4547d9ee322b0a29eed8d30c4dbb7d62ba8032632de03229dbbf2de1c76e91e3"
+          "text": "review the staged change against its acceptance criteria; prompt sha256 82ef9e5687b31a8be42ea4efe5167e708b1f56ea4d01ad3ebe2fa8360f728590"
         }
       ],
       "role": "ROLE_USER"
     }
   ],
-  "id": "att-c6bfada8-ee5a-412a-b8c1-737eea679aba",
+  "id": "att-a034d804-6bae-413d-a43a-5d895c50845e",
   "metadata": {
     "a2aVersion": "1.0.0",
     "producer": "tools/leftshift/attest.py"
   },
   "status": {
     "message": {
-      "messageId": "msg-bc160ab7-bf3d-4492-977c-c62771c606bc",
+      "messageId": "msg-0a7640e3-5c5a-40e3-94e4-f4a56a63c829",
       "parts": [
         {
           "text": "verdict: pass (0 verified HIGH findings)"
@@ -101,6 +109,6 @@
       "role": "ROLE_AGENT"
     },
     "state": "TASK_STATE_COMPLETED",
-    "timestamp": "2026-10-08T16:35:18Z"
+    "timestamp": "2026-10-08T18:31:21Z"
   }
 }
