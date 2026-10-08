@@ -7,27 +7,19 @@
         {
           "data": {
             "evaluator": {
-              "costUsd": 0.15251460000000003,
+              "costUsd": 0.1576116,
               "model": "claude-haiku-4-5-20251001",
-              "sessionId": "236d9732-1d5b-4b75-90da-105c2ab356fe"
+              "sessionId": "9a94d5b0-1e93-48d2-a602-fc5a40ed55ed"
             },
             "findings": {
               "unverified": [],
               "verified": [
                 {
-                  "ac": "data/raw policy",
-                  "claim": "land_raw writes every data/raw value, including Member first_name, last_name and postal_code, into a SQLite table. The db is git-ignored, but the code still copies raw values and those PII columns.",
-                  "file": "output/DP_Payment_Transaction/04_code/src/payment_transaction/raw.py",
-                  "line": 45,
-                  "quote": "wh.replace(raw_table(sources[name]), df)",
-                  "severity": "HIGH"
-                },
-                {
-                  "ac": "data/raw policy",
-                  "claim": "The Member contract declares the PII columns that the raw layer then creates as TEXT columns in the db.",
-                  "file": "output/DP_Payment_Transaction/04_code/contracts/sources.py",
-                  "line": 53,
-                  "quote": "C(\"first_name\", \"VARCHAR(50)\"",
+                  "ac": "FR-01 spec: every source column has type TEXT",
+                  "claim": "The TEXT-type test only inspects raw_transaction, so the other six raw tables are not checked against the spec scenario 'every source column has type TEXT'.",
+                  "file": "output/DP_Payment_Transaction/04_code/tests/test_raw_ingest.py",
+                  "line": 69,
+                  "quote": "PRAGMA table_info(raw_transaction)",
                   "severity": "LOW"
                 }
               ]
@@ -58,23 +50,23 @@
                 "name": "unittest"
               }
             ],
-            "modelVerdict": "fail",
-            "promptSha256": "ab253b3cf73f0117cead85f210886203e63d166353f16e662dd466a0fa7c4c22",
+            "modelVerdict": "pass",
+            "promptSha256": "4547d9ee322b0a29eed8d30c4dbb7d62ba8032632de03229dbbf2de1c76e91e3",
             "review": {
               "base": "1d88d3871dc069c401f77b921c1a1abac40b94d9",
               "binaryFiles": 0,
-              "chars": 69121,
+              "chars": 73274,
               "files": 30
             },
             "subject": {
               "algo": "sha256",
-              "digest": "7ca8d79283834304299c0a11f20e7fac898429ccf208f1fd764801d3f59d412b",
+              "digest": "fe8e474c5fa6bbbd73d543df9ea57a9e67a53d7ef7bd40de02db1da2c54d8468",
               "excludes": [
                 ".attestations/"
               ]
             },
-            "summary": "The change doesn't touch the gate tooling that the left-shift-gates ACs cover, so no AC is contradicted. The pipeline does copy data/raw values, including the first_name, last_name and postal_code columns, into a SQLite raw layer, which the review rules treat as HIGH even though the target is git-ignored and FR-01 asks for it.",
-            "verdict": "fail"
+            "summary": "The change adds the Payment Transaction FR-01 product and does not touch the left-shift gate code, so none of AC-1 to AC-7 is contradicted. PII is masked in memory before anything is written, and the manifest holds only counts and column names. I found one low-severity test gap.",
+            "verdict": "pass"
           },
           "mediaType": "application/json"
         }
@@ -84,31 +76,31 @@
   "contextId": "left-shift",
   "history": [
     {
-      "messageId": "msg-b09076da-e1bb-4e97-b846-5dc35681099f",
+      "messageId": "msg-9ab5abd6-fdaf-4235-ae71-91fd9eecee7d",
       "parts": [
         {
-          "text": "review the staged change against its acceptance criteria; prompt sha256 ab253b3cf73f0117cead85f210886203e63d166353f16e662dd466a0fa7c4c22"
+          "text": "review the staged change against its acceptance criteria; prompt sha256 4547d9ee322b0a29eed8d30c4dbb7d62ba8032632de03229dbbf2de1c76e91e3"
         }
       ],
       "role": "ROLE_USER"
     }
   ],
-  "id": "att-bf5af295-c81c-4807-a9c8-2507573c357d",
+  "id": "att-c6bfada8-ee5a-412a-b8c1-737eea679aba",
   "metadata": {
     "a2aVersion": "1.0.0",
     "producer": "tools/leftshift/attest.py"
   },
   "status": {
     "message": {
-      "messageId": "msg-7781b7cc-3819-4ab9-9107-a3294e986aac",
+      "messageId": "msg-bc160ab7-bf3d-4492-977c-c62771c606bc",
       "parts": [
         {
-          "text": "verdict: fail (1 verified HIGH findings)"
+          "text": "verdict: pass (0 verified HIGH findings)"
         }
       ],
       "role": "ROLE_AGENT"
     },
-    "state": "TASK_STATE_FAILED",
-    "timestamp": "2026-10-08T15:49:00Z"
+    "state": "TASK_STATE_COMPLETED",
+    "timestamp": "2026-10-08T16:35:18Z"
   }
 }

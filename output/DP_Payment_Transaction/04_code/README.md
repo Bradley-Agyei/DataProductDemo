@@ -12,7 +12,7 @@ Only FR-01 is built so far, under SCRUM-44.
   - The framework names the first two `src_file_name` and `src_load_ts`. `src/payment_transaction/raw.py` renames them to the FR-01 names, so the framework stays byte-identical across products.
 - **Row counts:** written to `out/raw_manifest.json`, which holds counts only.
 
-The raw layer contains Member PII exactly as received. The `.db` file and `out/` are git-ignored and must never be committed.
+**PII:** Member's `first_name`, `last_name` and `postal_code`, and Branch's `postal_code`, are header-checked and landed with every value replaced by `*` (`config.PII_MASKED_COLUMNS`). The manifest lists them as masked. The `.db` file and `out/` are git-ignored anyway.
 
 ## Run
 ```bash

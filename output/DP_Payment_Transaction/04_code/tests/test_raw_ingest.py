@@ -1,7 +1,8 @@
 """SCRUM-44 / FR-01: the transaction extract and its reference tables land unchanged in raw.
 
-Comparisons use DataFrame.equals so a failure reports only True/False: the
-Member extract holds PII and no value may reach the test output.
+PII columns (Member names and postal code, Branch postal code) land with every
+value masked (CLAUDE.md). Tests never print a value and compare with
+DataFrame.equals so a failure reports only True/False.
 """
 import json
 import sqlite3
@@ -34,13 +35,33 @@ def test_seven_sources_in_scope():
     assert sorted(config.SOURCE_FILES.values()) == sorted(EXPECTED_ROWS)
 
 
-# AC: All 7 files land in raw with values unchanged (text)
+# AC: All 7 files land in raw with values unchanged (text); PII values are masked
 @pytest.mark.parametrize("name", SOURCES)
 def test_values_land_unchanged_as_text(result, name):
     landed = read_raw(result.db_path, name)
     source = read_source(name)
     assert list(landed.columns[:len(source.columns)]) == list(source.columns)
-    assert landed[list(source.columns)].astype(object).equals(source.astype(object))
+    kept = [c for c in source.columns if c not in config.PII_MASKED_COLUMNS.get(name, ())]
+    assert landed[kept].astype(object).equals(source[kept].astype(object))
+
+
+@pytest.mark.parametrize("name", ["Branch", "Member"])
+def test_pii_values_are_masked(result, name):
+    masked = list(config.PII_MASKED_COLUMNS[name])
+    assert "postal_code" in masked
+    landed = read_raw(result.db_path, name)
+    assert (landed[masked] == config.PII_MASK).all().all()
+    assert len(landed) == EXPECTED_ROWS[f"{name}.csv"]
+    manifest = json.loads(result.manifest_path.read_text(encoding="utf-8"))
+    assert manifest["masked_columns"][f"{name}.csv"] == masked
+
+
+def test_renamed_pii_column_still_fails_the_header_check(tmp_path, src_copy):
+    header = [("given_name" if c == "first_name" else c) for c in SOURCES["Member"].column_names]
+    rewrite_header(src_copy / "Member.csv", header)
+    with pytest.raises(SchemaError, match="Member.csv"):
+        run_build(tmp_path, src_dir=src_copy)
+    assert not (tmp_path / "payment_transaction.db").exists()
 
 
 def test_raw_columns_are_untyped_text(result):

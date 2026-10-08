@@ -10,6 +10,7 @@
 - [x] 2.1 Add `src/payment_transaction/raw.py`: ingest through `dp_framework.ingest.ingest_all`, rename the load columns to `source_file`/`dp_load_ts`, land `raw_<name>` TEXT tables, and write a counts-only `raw_manifest.json`. Verify: `test_values_land_unchanged_as_text`, `test_raw_columns_are_untyped_text`, `test_row_counts_recorded`, `test_rows_carry_load_columns`.
 - [x] 2.2 Add the header gate behaviour checks (renamed column, missing column, missing file → nothing written). Verify: `test_header_change_fails_before_anything_is_written`, `test_missing_file_fails_before_anything_is_written`.
 - [x] 2.3 Add `src/payment_transaction/run.py` with the CLI. Verify: `python -m src.payment_transaction.run` prints Transaction 100 rows and 10 for each of the other six files.
+- [x] 2.4 Mask every value of Member `first_name`, `last_name`, `postal_code` and Branch `postal_code` with `*` after the header check (`config.PII_MASKED_COLUMNS`). Verify: `test_pii_values_are_masked`, `test_renamed_pii_column_still_fails_the_header_check`.
 
 ## 3. Docs
 

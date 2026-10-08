@@ -29,10 +29,12 @@ def build(src_dir: Path = config.SOURCE_DIR, db_path: Path = config.DB_PATH, out
     batch_id = batch_id or str(uuid.uuid4())
     load_ts = load_ts or datetime.now().replace(microsecond=0)
 
-    raw = ingest_raw(Path(src_dir), SOURCES, config.SOURCE_FILES, batch_id, load_ts)
+    masked = config.PII_MASKED_COLUMNS
+    raw = ingest_raw(Path(src_dir), SOURCES, config.SOURCE_FILES, batch_id, load_ts, masked, config.PII_MASK)
     land_raw(raw, SOURCES, Path(db_path))
     counts = row_counts(raw, config.SOURCE_FILES)
-    manifest = write_manifest(Path(out_dir), batch_id, load_ts, counts)
+    manifest = write_manifest(Path(out_dir), batch_id, load_ts, counts,
+                              {config.SOURCE_FILES[name]: cols for name, cols in masked.items()})
     return RunResult(batch_id, load_ts, counts, Path(db_path), manifest)
 
 

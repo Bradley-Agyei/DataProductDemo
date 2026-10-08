@@ -7,7 +7,7 @@ Defines how the Payment Transaction data product lands its source extracts in th
 ## ADDED Requirements
 
 ### Requirement: Source extracts land unchanged as text
-The run SHALL land each of the 7 source extracts (Transaction, Transaction_Type, Channel, Date, Branch, Account, Member) in its own raw table, with every source value kept exactly as received, as untyped text.
+The run SHALL land each of the 7 source extracts (Transaction, Transaction_Type, Channel, Date, Branch, Account, Member) in its own raw table, with every source value kept exactly as received, as untyped text, except PII values, which are masked.
 
 #### Scenario: Values are not coerced
 - **WHEN** the run loads the sample extracts
@@ -42,9 +42,17 @@ Every raw row SHALL carry `source_file` (VARCHAR(255)), `dp_load_ts` (TIMESTAMP)
 - **WHEN** the run loads the sample extracts with a given batch ID and load time
 - **THEN** every row of every raw table has its own file name, that load time and that batch ID
 
-### Requirement: Raw PII stays out of version control
-The raw layer SHALL be written only to git-ignored paths. The row count record SHALL contain counts only, never row values.
+### Requirement: PII never leaves data/raw
+The run SHALL replace every value of Member's `first_name`, `last_name` and `postal_code`, and Branch's `postal_code`, with `*` before anything is written. The columns SHALL stay in the raw tables, and their headers SHALL still be checked, so renaming or removing one fails the run. The row count record SHALL contain counts and column names only, never row values.
 
-#### Scenario: Manifest holds counts only
+#### Scenario: PII values are masked
+- **WHEN** the run loads the sample extracts
+- **THEN** every value in those columns of `raw_member` and `raw_branch` is `*`, and the manifest lists them as masked
+
+#### Scenario: Renamed PII column
+- **WHEN** `first_name` in Member.csv is renamed
+- **THEN** the run fails with an error naming Member.csv and no output is written
+
+#### Scenario: Manifest holds no values
 - **WHEN** the run completes
-- **THEN** `raw_manifest.json` contains the batch ID, the load time and one row count per file, and nothing else
+- **THEN** `raw_manifest.json` contains the batch ID, the load time, one row count per file and the masked column names, and nothing else

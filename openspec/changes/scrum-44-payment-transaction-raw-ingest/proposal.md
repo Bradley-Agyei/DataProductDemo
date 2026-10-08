@@ -11,7 +11,8 @@ DP_Payment_Transaction (Jira epic SCRUM-36) needs every published transaction ro
 - A raw layer: one `raw_<name>` table per source, untyped text, with `source_file`, `dp_load_ts` and `dp_batch_id` on every row.
 - Row counts per file, recorded in `out/raw_manifest.json`.
 - A missing file, or a missing or renamed header, fails the run before any table is written.
-- `data/raw/` is unchanged. The raw layer holds Member PII exactly as received, so it's written only to git-ignored paths.
+- Member's `first_name`, `last_name` and `postal_code`, and Branch's `postal_code`, keep their columns but every value is replaced with `*`, because CLAUDE.md says PII never leaves `data/raw/`. This is the one deviation from the story's "values unchanged": no Payment Transaction requirement uses those values.
+- `data/raw/` is unchanged.
 
 Out of scope: FR-02 to FR-07 (standardize, enrich, integrity checks, risk signals, publish), which are SCRUM-45 to SCRUM-50.
 
