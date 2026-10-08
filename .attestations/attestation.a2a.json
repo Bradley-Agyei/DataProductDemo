@@ -7,27 +7,19 @@
         {
           "data": {
             "evaluator": {
-              "costUsd": 0.9350096,
-              "model": "claude-sonnet-5",
-              "sessionId": "8c81c437-6364-4674-bdfb-035b2796c027"
+              "costUsd": 0.1576116,
+              "model": "claude-haiku-4-5-20251001",
+              "sessionId": "9a94d5b0-1e93-48d2-a602-fc5a40ed55ed"
             },
             "findings": {
               "unverified": [],
               "verified": [
                 {
-                  "ac": "AC-6",
-                  "claim": "The Fraud Case PRD still documents the extract source as data/raw/DP_Fraud_Case.csv, contradicting the pipeline's actual config (config.SOURCE_DIR = data/product), even though the KT doc flags this as a known stale-prose issue elsewhere.",
-                  "file": "output/DP_Fraud_Case/PRD_Fraud_Case.md",
-                  "line": 10,
-                  "quote": "data/raw/DP_Fraud_Case.csv (case-management extract)",
-                  "severity": "LOW"
-                },
-                {
-                  "ac": "AC-6",
-                  "claim": "The 04_code README still says the extract is read from data/raw/DP_Fraud_Case.csv, but src/fraud_case/config.py reads from data/product/DP_Fraud_Case.csv; this is acknowledged as stale prose in docs/kt/fraud-case/README.md but not corrected here.",
-                  "file": "output/DP_Fraud_Case/04_code/README.md",
-                  "line": 3,
-                  "quote": "data/raw/DP_Fraud_Case.csv`",
+                  "ac": "FR-01 spec: every source column has type TEXT",
+                  "claim": "The TEXT-type test only inspects raw_transaction, so the other six raw tables are not checked against the spec scenario 'every source column has type TEXT'.",
+                  "file": "output/DP_Payment_Transaction/04_code/tests/test_raw_ingest.py",
+                  "line": 69,
+                  "quote": "PRAGMA table_info(raw_transaction)",
                   "severity": "LOW"
                 }
               ]
@@ -59,21 +51,21 @@
               }
             ],
             "modelVerdict": "pass",
-            "promptSha256": "83e427af65188d0086000978d4479d1c2d63b4ec3906fc5b2f8465cf0c82a9e1",
+            "promptSha256": "4547d9ee322b0a29eed8d30c4dbb7d62ba8032632de03229dbbf2de1c76e91e3",
             "review": {
-              "base": "f951259163a6ced5146533e734cc65e748cccdc7",
-              "binaryFiles": 6,
-              "chars": 434339,
-              "files": 116
+              "base": "1d88d3871dc069c401f77b921c1a1abac40b94d9",
+              "binaryFiles": 0,
+              "chars": 73274,
+              "files": 30
             },
             "subject": {
               "algo": "sha256",
-              "digest": "50241781df79d00b9f0e4252994c4638c905077ce5927dfded846d746a59f963",
+              "digest": "fe8e474c5fa6bbbd73d543df9ea57a9e67a53d7ef7bd40de02db1da2c54d8468",
               "excludes": [
                 ".attestations/"
               ]
             },
-            "summary": "tools/leftshift/attest.py correctly implements the make/verify/review_files behaviour required by AC-5, AC-6 and AC-7 (gate-first ordering with no model call on a red gate, a size refusal before any truncation, staging only on a verdict with no verified HIGH finding, whole-branch diffing with CSV/data/binary/vendored-gate exclusion, and a verify() that rejects missing/stale/failed/non-A2A/missing-gate/red-gate/HIGH-finding attestations), and trace.json's implements-line references for these ACs match the file; tools/leftshift/checks.py (which would implement AC-1\u2013AC-4) is not part of this staged diff so its behaviour could not be verified. No HIGH-severity issues (PII columns or data/raw leakage) were found in the large accompanying Fraud Case/Member 360 product code, which keeps PII columns confined to the raw source contract and excludes them from published tables per its own test; only minor stale-documentation mismatches (PRD/README still citing data/raw instead of data/product) were noted.",
+            "summary": "The change adds the Payment Transaction FR-01 product and does not touch the left-shift gate code, so none of AC-1 to AC-7 is contradicted. PII is masked in memory before anything is written, and the manifest holds only counts and column names. I found one low-severity test gap.",
             "verdict": "pass"
           },
           "mediaType": "application/json"
@@ -84,23 +76,23 @@
   "contextId": "left-shift",
   "history": [
     {
-      "messageId": "msg-0fd8cd18-d618-4827-b3dd-51bc57f5b1e7",
+      "messageId": "msg-9ab5abd6-fdaf-4235-ae71-91fd9eecee7d",
       "parts": [
         {
-          "text": "review the staged change against its acceptance criteria; prompt sha256 83e427af65188d0086000978d4479d1c2d63b4ec3906fc5b2f8465cf0c82a9e1"
+          "text": "review the staged change against its acceptance criteria; prompt sha256 4547d9ee322b0a29eed8d30c4dbb7d62ba8032632de03229dbbf2de1c76e91e3"
         }
       ],
       "role": "ROLE_USER"
     }
   ],
-  "id": "att-d14cf279-9ffd-4954-89e9-d5d3e8a05b5d",
+  "id": "att-c6bfada8-ee5a-412a-b8c1-737eea679aba",
   "metadata": {
     "a2aVersion": "1.0.0",
     "producer": "tools/leftshift/attest.py"
   },
   "status": {
     "message": {
-      "messageId": "msg-0972c9d6-4652-418c-8a5d-6b650630bd35",
+      "messageId": "msg-bc160ab7-bf3d-4492-977c-c62771c606bc",
       "parts": [
         {
           "text": "verdict: pass (0 verified HIGH findings)"
@@ -109,6 +101,6 @@
       "role": "ROLE_AGENT"
     },
     "state": "TASK_STATE_COMPLETED",
-    "timestamp": "2026-10-06T19:13:42Z"
+    "timestamp": "2026-10-08T16:35:18Z"
   }
 }
