@@ -2,7 +2,23 @@
 
 Account Daily Balance data product (Jira epic SCRUM-35): one governed row per account per calendar day. Built on the shared `dp_framework`, the same as the other products.
 
-Only **FR-07 publish (SCRUM-43)** is built so far. FR-01 to FR-06 (SCRUM-37 to 42) will build the product frame that `publish` takes.
+**FR-04 roll-forward (SCRUM-40)** and **FR-07 publish (SCRUM-43)** are built. FR-01 to FR-03 (SCRUM-37 to 39) and FR-05 to FR-06 (SCRUM-41 to 42) will complete the pipeline.
+
+## FR-04 Balance roll-forward (SCRUM-40)
+
+`src/account_daily_balance/roll_forward.py` produces one row per account per calendar day, with opening and closing balances that chain day-to-day.
+
+- `calendar_spine(accounts, dates)`: cross join of Date rows × Account rows, filtered to accounts open on each day (100 rows on the sample: 10 accounts × 10 dates).
+- `roll_forward(accounts, dates, daily_totals)`: applies opening balance (day 1 at `current_balance` per Q2, later days from prior closing), adds daily totals, computes closing = opening + credits − debits. Days without activity carry the opening balance. Any extra columns from `daily_totals` pass through, zero-filled.
+
+`config.FIRST_DAY_OPENING_COLUMN = "current_balance"` (Q2) sets which Account column opens day 1; change it if Finance confirms otherwise.
+
+Tests in `tests/test_roll_forward.py`:
+- Unit tests on small hand-built frames (opening, closing, carry-forward, totals outside spine, etc.).
+- Sample acceptance: 100 rows, DQ-05 and DQ-06 pass, A0000001 opens 09-21 at 500.00 and closes at 10,713.32, opens 09-22 at 10,713.32.
+- Verification that `balance_after` is not used: scramble source values, output stays identical.
+
+`tests/sample_inputs.py` is a test-only loader (stands in for FR-01 to FR-03) that reads `data/raw` and counts Posted transactions only. Remove when SCRUM-39 lands.
 
 ## FR-07 Publish with DQ gate, exceptions and data contract (SCRUM-43)
 
@@ -38,4 +54,4 @@ pip install -r requirements.txt
 pytest -q
 python -m src.account_daily_balance.run --write-ddl   # regenerate sql/ddl from the contracts
 ```
-The end-to-end run (sample data, 100 rows) needs FR-01 to FR-06.
+`pytest -q` includes the FR-04 sample acceptance tests (100 rows via the test loader) and all FR-07 tests. The end-to-end run (full product CSV to `data/product/`) needs FR-01 to FR-06 wired into `publish()`.
