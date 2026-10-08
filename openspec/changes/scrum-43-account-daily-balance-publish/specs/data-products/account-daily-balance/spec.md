@@ -21,8 +21,12 @@ DQ-01 to DQ-07 and DQ-10 SHALL be blocking rules. When any of them fails, the ru
 - **THEN** DQ-05 fails, the run is BLOCKED and the previously published product is unchanged
 
 #### Scenario: Reconciliation fails
-- **WHEN** an account's credits − debits differ from its counted source transactions
+- **WHEN** an account's total credits or total debits differ from its counted source credits or debits
 - **THEN** DQ-07 fails and the run is BLOCKED
+
+#### Scenario: Offsetting errors do not reconcile
+- **WHEN** an account's credits and debits are both wrong by the same amount, so the net still matches
+- **THEN** DQ-07 still fails
 
 #### Scenario: First run blocked
 - **WHEN** the first run is BLOCKED
