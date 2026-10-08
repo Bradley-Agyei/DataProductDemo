@@ -7,22 +7,13 @@
         {
           "data": {
             "evaluator": {
-              "costUsd": 0.1525836,
+              "costUsd": 0.1537296,
               "model": "claude-haiku-4-5-20251001",
-              "sessionId": "60602bda-c6ad-49ef-8484-237c2293476c"
+              "sessionId": "7689c0c5-e77d-4888-b58b-892c691f6630"
             },
             "findings": {
               "unverified": [],
-              "verified": [
-                {
-                  "ac": "AC-1",
-                  "claim": "The PRD gives the primary key as (account_id, balance_date). The contract, its test and the proposal use balance_date + account_id. The DQ-01 rule uses account_id first. The key order differs between documents and code.",
-                  "file": "output/DP_Account_Daily_Balance/PRD_Account_Daily_Balance.md",
-                  "line": 186,
-                  "quote": "Primary key: (account_id, balance_date).",
-                  "severity": "LOW"
-                }
-              ]
+              "verified": []
             },
             "gates": [
               {
@@ -51,21 +42,21 @@
               }
             ],
             "modelVerdict": "pass",
-            "promptSha256": "8366eb89e0068b54ef0317699a137a7bd88c2ccc9bd294873bd2e36a6edc0572",
+            "promptSha256": "5ea26d86c7d07b144ab77079b28b7db1e94473d5798b4ec630738817eba80b28",
             "review": {
-              "base": "7868cf1808ade104cca8f0a5b4d75ea9b9fa8d56",
+              "base": "ef9621e1ee666376f2b682bffceab8efb4a09c05",
               "binaryFiles": 0,
-              "chars": 67708,
+              "chars": 67738,
               "files": 12
             },
             "subject": {
               "algo": "sha256",
-              "digest": "5ba893484d7b84dbf13103fe5cf06319f9f9870a7f2734dbdd46ff11837b91d7",
+              "digest": "e7366ca6f3daf902e84faecf13cf9c3f93c6b636de45440432342b5602e6b347",
               "excludes": [
                 ".attestations/"
               ]
             },
-            "summary": "The change adds the Account Daily Balance publish step. It does not touch the left-shift-gate ACs, and I found no HIGH problems, no raw-data or PII value leaks, and no test that misses its AC. One LOW issue: the contract and proposal order the primary key differently from the PRD.",
+            "summary": "The staged change adds the Account Daily Balance FR-07 publish product, its docs and its tests. It doesn't touch the left-shift gate code, and I found no data/raw or PII-column leaks and no contradictions with the ACs.",
             "verdict": "pass"
           },
           "mediaType": "application/json"
@@ -76,23 +67,23 @@
   "contextId": "left-shift",
   "history": [
     {
-      "messageId": "msg-c5347586-27ae-435b-831b-d5eceb15a775",
+      "messageId": "msg-97e4aef9-ceb4-49e5-a943-565d149f481c",
       "parts": [
         {
-          "text": "review the staged change against its acceptance criteria; prompt sha256 8366eb89e0068b54ef0317699a137a7bd88c2ccc9bd294873bd2e36a6edc0572"
+          "text": "review the staged change against its acceptance criteria; prompt sha256 5ea26d86c7d07b144ab77079b28b7db1e94473d5798b4ec630738817eba80b28"
         }
       ],
       "role": "ROLE_USER"
     }
   ],
-  "id": "att-13e03a64-6435-466b-8e8b-9fadd986cb66",
+  "id": "att-9397a316-2a2e-4a1c-b026-4ba308bba7f8",
   "metadata": {
     "a2aVersion": "1.0.0",
     "producer": "tools/leftshift/attest.py"
   },
   "status": {
     "message": {
-      "messageId": "msg-44e45afd-1cae-4daf-b255-9d3b685bfcdf",
+      "messageId": "msg-7cd45c7b-f8f9-4a49-b04f-cc7294976784",
       "parts": [
         {
           "text": "verdict: pass (0 verified HIGH findings)"
@@ -101,6 +92,6 @@
       "role": "ROLE_AGENT"
     },
     "state": "TASK_STATE_COMPLETED",
-    "timestamp": "2026-10-08T19:09:19Z"
+    "timestamp": "2026-10-08T19:25:59Z"
   }
 }
