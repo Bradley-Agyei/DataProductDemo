@@ -12,7 +12,7 @@ Only FR-01 is built so far, under SCRUM-44. The requirements are in the PRD, `..
   - The framework names the first two `src_file_name` and `src_load_ts`. `src/payment_transaction/raw.py` renames them to the FR-01 names, so the framework stays byte-identical across products.
 - **Row counts:** written to `out/raw_manifest.json`, which holds counts only.
 
-**PII:** Member's `first_name`, `last_name` and `postal_code`, and Branch's `postal_code`, are header-checked and landed with every value replaced by `*` (`config.PII_MASKED_COLUMNS`). The manifest lists them as masked. The `.db` file and `out/` are git-ignored anyway.
+**PII:** Member's `first_name`, `last_name`, `city` and `postal_code` (PRD §5.7), and Branch's `city` and `postal_code` (§5.5), are header-checked and landed with every value replaced by `*` (`config.PII_MASKED_COLUMNS`). The manifest lists them as masked. The `.db` file and `out/` are git-ignored anyway.
 
 ## Run
 ```bash
@@ -24,8 +24,9 @@ python -m src.payment_transaction.run
 ## Layout
 | Path | What |
 |---|---|
-| `contracts/sources.py` | One `Column` per column of the 7 source CSVs |
+| `contracts/sources.py` | One `Column` per column of the 7 source CSVs, with types and keys from PRD §5 |
 | `src/dp_framework/` | Shared framework, a byte-identical copy (checked by `tests/test_framework_sync.py`) |
 | `src/payment_transaction/raw.py` | FR-01: rename load columns, land raw tables, record row counts |
 | `src/payment_transaction/run.py` | Pipeline entry point |
 | `tests/test_raw_ingest.py` | One test per FR-01 acceptance criterion |
+| `tests/test_source_contract.py` | Contracts checked against PRD §5 (read from the PRD file), plus raw key integrity checks (read-only) |

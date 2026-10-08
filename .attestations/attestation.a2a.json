@@ -7,13 +7,22 @@
         {
           "data": {
             "evaluator": {
-              "costUsd": 0.1537296,
+              "costUsd": 0.0967266,
               "model": "claude-haiku-4-5-20251001",
-              "sessionId": "7689c0c5-e77d-4888-b58b-892c691f6630"
+              "sessionId": "d0be0720-779e-466f-839f-4919d38d7fe0"
             },
             "findings": {
               "unverified": [],
-              "verified": []
+              "verified": [
+                {
+                  "ac": "AC-2",
+                  "claim": "On failure this assertion prints the raw foreign-key values from data/raw. They are IDs, not PII, but the header comment says assertions report counts and key values only, so the behaviour is the documented intent. Reporting counts would be safer if an ID column ever carried sensitive values.",
+                  "file": "output/DP_Payment_Transaction/04_code/tests/test_source_contract.py",
+                  "line": 112,
+                  "quote": "orphans = sorted(set(raw(table)[column]) - set(raw(parent)[parent_column]))",
+                  "severity": "LOW"
+                }
+              ]
             },
             "gates": [
               {
@@ -42,21 +51,21 @@
               }
             ],
             "modelVerdict": "pass",
-            "promptSha256": "5ea26d86c7d07b144ab77079b28b7db1e94473d5798b4ec630738817eba80b28",
+            "promptSha256": "7af8ac83b45087dd7dad7fdfe223745677bb4c8ee71cde95c6570b3e922e116c",
             "review": {
-              "base": "ef9621e1ee666376f2b682bffceab8efb4a09c05",
+              "base": "a17bf1ee5f6766e538b6b7e01dbfe5dd365e0d4d",
               "binaryFiles": 0,
-              "chars": 67738,
+              "chars": 41685,
               "files": 12
             },
             "subject": {
               "algo": "sha256",
-              "digest": "e7366ca6f3daf902e84faecf13cf9c3f93c6b636de45440432342b5602e6b347",
+              "digest": "183f5d5a805ff95b072444dc668b7eeb67d5cf18a795b33091538294c6bbf242",
               "excludes": [
                 ".attestations/"
               ]
             },
-            "summary": "The staged change adds the Account Daily Balance FR-07 publish product, its docs and its tests. It doesn't touch the left-shift gate code, and I found no data/raw or PII-column leaks and no contradictions with the ACs.",
+            "summary": "The change aligns the Payment Transaction source contracts and PII masking to the PRD and adds contract tests. It doesn't touch the left-shift gate code, so I found no AC violations; the one finding is low severity.",
             "verdict": "pass"
           },
           "mediaType": "application/json"
@@ -67,23 +76,23 @@
   "contextId": "left-shift",
   "history": [
     {
-      "messageId": "msg-97e4aef9-ceb4-49e5-a943-565d149f481c",
+      "messageId": "msg-98cd06c7-1ed7-43d9-9c55-acaf081f43b8",
       "parts": [
         {
-          "text": "review the staged change against its acceptance criteria; prompt sha256 5ea26d86c7d07b144ab77079b28b7db1e94473d5798b4ec630738817eba80b28"
+          "text": "review the staged change against its acceptance criteria; prompt sha256 7af8ac83b45087dd7dad7fdfe223745677bb4c8ee71cde95c6570b3e922e116c"
         }
       ],
       "role": "ROLE_USER"
     }
   ],
-  "id": "att-9397a316-2a2e-4a1c-b026-4ba308bba7f8",
+  "id": "att-308f8473-ee9f-4df7-a465-789f96d583f5",
   "metadata": {
     "a2aVersion": "1.0.0",
     "producer": "tools/leftshift/attest.py"
   },
   "status": {
     "message": {
-      "messageId": "msg-7cd45c7b-f8f9-4a49-b04f-cc7294976784",
+      "messageId": "msg-5402b881-6509-4303-a627-15d015af8d31",
       "parts": [
         {
           "text": "verdict: pass (0 verified HIGH findings)"
@@ -92,6 +101,6 @@
       "role": "ROLE_AGENT"
     },
     "state": "TASK_STATE_COMPLETED",
-    "timestamp": "2026-10-08T19:25:59Z"
+    "timestamp": "2026-10-08T20:06:12Z"
   }
 }

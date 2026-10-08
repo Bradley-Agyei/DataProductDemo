@@ -20,9 +20,20 @@
 
 ## Things to know
 
-- **PII is masked.** FR-01 says to land Member unchanged, but CLAUDE.md says PII never leaves `data/raw/`, and the attestation review flagged the full copy as HIGH. So Member's `first_name`, `last_name` and `postal_code` keep their columns, but every value is replaced with `*`. Branch's `postal_code` is masked too, because the pii gate treats every `postal_code` as PII (`config.PII_MASKED_COLUMNS`). No later story needs them. If one ever does, it needs a decision, not a config change.
+- **PII is masked.** FR-01 says to land Member unchanged, but CLAUDE.md says PII never leaves `data/raw/`, and the attestation review flagged the full copy as HIGH. So Member's `first_name`, `last_name`, `city` and `postal_code` (the PII columns in PRD §5.7) keep their columns, but every value is replaced with `*`. Branch's `city` and `postal_code` are masked too, because PRD §5.5 hides them as matching member PII (`config.PII_MASKED_COLUMNS`). No later story needs them. If one ever does, it needs a decision, not a config change.
 - **Path difference.** The Jira stories say `sources/data/raw/`. The repo uses `data/raw/`.
 - **PRD.** `output/DP_Payment_Transaction/PRD_Payment_Transaction.md` (Draft v0.1) defines the 20-column target, the source-to-target mapping, FR-01 to FR-07, DQ-01 to DQ-14 and open questions Q1 to Q11. Things to know when reading it against the code:
   - **Paths.** The PRD writes `sources/data/raw/` and `data/output/product/`. The repo uses `data/raw/` and `data/product/`.
-  - **PII.** FR-01 says to land the extracts unchanged, but §4 and §9 rule out PII. The raw layer masks Member `first_name`, `last_name` and `postal_code`, and Branch `postal_code`, with `*` (SCRUM-44). It doesn't mask Member `city`, which §5.7 marks as PII. That's worth a follow-up.
+  - **PII.** FR-01 says to land the extracts unchanged, but §4 and §9 rule out PII. The raw layer masks Member `first_name`, `last_name`, `city` and `postal_code`, and Branch `city` and `postal_code`, with `*`.
   - **Not traced yet.** The OpenSpec change `scrum-44-payment-transaction-raw-ingest` still has no `prd.md`, so spec-gate reports it as NOT TRACED. Tracing FR-01 needs a `prd.md` in that change plus `# implements:` markers in the code.
+- **Source contracts are pinned to the PRD.** `contracts/sources.py` started as a copy of Member 360's contracts. It now follows PRD §5. `tests/test_source_contract.py` reads the §5 tables from the PRD file, so a PRD edit that the contract doesn't follow fails the build.
+- **Raw data baseline (2026-10-08).** The 7 extracts match the PRD:
+  - every primary key unique;
+  - every ID in its §5 raw format;
+  - 0 orphan foreign keys;
+  - the member and branch match the account on 100 of 100 transactions;
+  - the direction matches the type on 100 of 100 transactions;
+  - all 10 accounts present in `account_id_map`;
+  - `date_key` agrees with `full_date` on all 10 days.
+
+  The same test file re-checks this. If it fails on a new extract, report it to the source owner. Don't edit `data/raw/`.
