@@ -2,6 +2,8 @@
 import re
 from pathlib import Path
 
+from contracts.sources import SOURCES
+
 CODE_DIR = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = CODE_DIR.parents[2]
 
@@ -12,6 +14,9 @@ SAMPLE_PRODUCT_CSV = PROJECT_ROOT / "data" / "product" / "DP_Account_Daily_Balan
 SAMPLE_COLUMNS = ("balance_date", "account_id", "member_id", "product_code", "account_status",
                   "opening_balance", "total_credits", "total_debits", "closing_balance",
                   "available_balance", "overdraft_flag")
+
+SOURCE_DIR = PROJECT_ROOT / "data" / "raw"
+SOURCE_FILES = {name: f"{name}.csv" for name in SOURCES}
 
 DB_PATH = CODE_DIR / "account_daily_balance.db"
 OUT_DIR = CODE_DIR / "out"

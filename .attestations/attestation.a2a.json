@@ -7,13 +7,46 @@
         {
           "data": {
             "evaluator": {
-              "costUsd": 0.1537296,
+              "costUsd": 0.35813939999999994,
               "model": "claude-haiku-4-5-20251001",
-              "sessionId": "7689c0c5-e77d-4888-b58b-892c691f6630"
+              "sessionId": "803eeff0-bb18-4012-ac88-4d4bbdaa313a"
             },
             "findings": {
               "unverified": [],
-              "verified": []
+              "verified": [
+                {
+                  "ac": "AC-3",
+                  "claim": "The Member source contract's postal_code description says it is kept as text, contradicting that postal_code is one of the four PII columns dropped before any raw table is written.",
+                  "file": "output/DP_Account_Daily_Balance/04_code/contracts/sources.py",
+                  "line": 42,
+                  "quote": "ZIP code (quasi-identifier), kept as text.",
+                  "severity": "MEDIUM"
+                },
+                {
+                  "ac": "AC-3",
+                  "claim": "Unlike first_name and last_name which are annotated PII: never published, the city column, also dropped as PII, has a plain description with no PII annotation.",
+                  "file": "output/DP_Account_Daily_Balance/04_code/contracts/sources.py",
+                  "line": 40,
+                  "quote": "description=\"Member city.\"",
+                  "severity": "LOW"
+                },
+                {
+                  "ac": "AC-3",
+                  "claim": "test_renamed_pii_column_still_fails_the_header_check only asserts the db file is absent, unlike sibling header-change tests that also assert the out directory is absent, so it only partially verifies that no output is written.",
+                  "file": "output/DP_Account_Daily_Balance/04_code/tests/test_raw_ingest.py",
+                  "line": 95,
+                  "quote": "assert not (tmp_path / \"account_daily_balance.db\").exists()",
+                  "severity": "MEDIUM"
+                },
+                {
+                  "ac": "AC-3",
+                  "claim": "The module docstring says PII columns are found solely via config.is_pii_column, omitting that city is additionally matched through PRD_PII_COLUMNS.",
+                  "file": "output/DP_Account_Daily_Balance/04_code/src/account_daily_balance/raw.py",
+                  "line": 5,
+                  "quote": "found with config.is_pii_column, the same rule FR-07 applies",
+                  "severity": "LOW"
+                }
+              ]
             },
             "gates": [
               {
@@ -42,21 +75,21 @@
               }
             ],
             "modelVerdict": "pass",
-            "promptSha256": "5ea26d86c7d07b144ab77079b28b7db1e94473d5798b4ec630738817eba80b28",
+            "promptSha256": "0f47434ecb0411a1bcac322c9d60af5c6a21a01e0bb216b0315c6ccdf43b7e43",
             "review": {
-              "base": "ef9621e1ee666376f2b682bffceab8efb4a09c05",
+              "base": "a17bf1ee5f6766e538b6b7e01dbfe5dd365e0d4d",
               "binaryFiles": 0,
-              "chars": 67738,
-              "files": 12
+              "chars": 47863,
+              "files": 11
             },
             "subject": {
               "algo": "sha256",
-              "digest": "e7366ca6f3daf902e84faecf13cf9c3f93c6b636de45440432342b5602e6b347",
+              "digest": "877f4770f88439ab723bc4c1e77d997108278e7414dc616704fa41a81e7c262f",
               "excludes": [
                 ".attestations/"
               ]
             },
-            "summary": "The staged change adds the Account Daily Balance FR-07 publish product, its docs and its tests. It doesn't touch the left-shift gate code, and I found no data/raw or PII-column leaks and no contradictions with the ACs.",
+            "summary": "All listed gates pass and the FR-01 raw-ingestion change correctly drops first_name, last_name, city and postal_code before any write, matching its spec and KT docs with no PII leaving data/raw. Only minor documentation and test-coverage gaps were found, none of which break an acceptance criterion.",
             "verdict": "pass"
           },
           "mediaType": "application/json"
@@ -67,23 +100,23 @@
   "contextId": "left-shift",
   "history": [
     {
-      "messageId": "msg-97e4aef9-ceb4-49e5-a943-565d149f481c",
+      "messageId": "msg-17d653fe-668e-4a1b-9439-fd149216d614",
       "parts": [
         {
-          "text": "review the staged change against its acceptance criteria; prompt sha256 5ea26d86c7d07b144ab77079b28b7db1e94473d5798b4ec630738817eba80b28"
+          "text": "review the staged change against its acceptance criteria; prompt sha256 0f47434ecb0411a1bcac322c9d60af5c6a21a01e0bb216b0315c6ccdf43b7e43"
         }
       ],
       "role": "ROLE_USER"
     }
   ],
-  "id": "att-9397a316-2a2e-4a1c-b026-4ba308bba7f8",
+  "id": "att-3ba86f92-a2de-408b-a22b-c8b739803aad",
   "metadata": {
     "a2aVersion": "1.0.0",
     "producer": "tools/leftshift/attest.py"
   },
   "status": {
     "message": {
-      "messageId": "msg-7cd45c7b-f8f9-4a49-b04f-cc7294976784",
+      "messageId": "msg-859d7f8f-6874-46cd-8d16-e2ef61399ad9",
       "parts": [
         {
           "text": "verdict: pass (0 verified HIGH findings)"
@@ -92,6 +125,6 @@
       "role": "ROLE_AGENT"
     },
     "state": "TASK_STATE_COMPLETED",
-    "timestamp": "2026-10-08T19:25:59Z"
+    "timestamp": "2026-10-08T20:01:32Z"
   }
 }
