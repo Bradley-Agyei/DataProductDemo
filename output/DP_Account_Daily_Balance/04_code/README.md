@@ -2,7 +2,18 @@
 
 Account Daily Balance data product (Jira epic SCRUM-35, PRD `../PRD_Account_Daily_Balance.md`): one governed row per account per calendar day. Built on the shared `dp_framework`, the same as the other products.
 
-Only **FR-07 publish (SCRUM-43)** is built so far. FR-01 to FR-06 (SCRUM-37 to 42) will build the product frame that `publish` takes.
+**FR-01 raw ingestion (SCRUM-37)** and **FR-07 publish (SCRUM-43)** are built so far. FR-02 to FR-06 (SCRUM-38 to 42) will build the product frame that `publish` takes.
+
+## FR-01 Ingest core banking extracts (SCRUM-37)
+
+`src/account_daily_balance/raw.py: build()` reads the 6 core banking extracts from `data/raw/` (Account, Transaction, Transaction_Type, Product, Member, Date), checks every header, and lands each as a `raw_<name>` table with every column as text:
+
+1. **Header gate.** All files are read and header-checked by `dp_framework.ingest` before anything is written. A renamed or missing column, or a missing file, raises `SchemaError` and leaves no database and no `out/` behind.
+2. **PII drop.** PII columns (Member `first_name`, `last_name`, `city`, `postal_code`: those `config.is_pii_column` finds, plus `city`, which PRD §5.5 types as PII) are dropped in memory after the header check and before the write. No PII name or value lands in the raw layer.
+3. **Load columns.** Each row carries `source_file`, `dp_load_ts` and `dp_batch_id`.
+4. **Row counts.** `out/raw_manifest.json` records rows per file (Account 10, Transaction 100, others 10) and how many PII columns were dropped, never a row value or PII column name.
+
+A rerun replaces the raw tables. `account_id_map` is not an FR-01 source.
 
 ## FR-07 Publish with DQ gate, exceptions and data contract (SCRUM-43)
 
@@ -37,6 +48,7 @@ A rerun with the same inputs replaces the product with the same rows.
 ```bash
 pip install -r requirements.txt
 pytest -q
-python -m src.account_daily_balance.run --write-ddl   # regenerate sql/ddl from the contracts
+python -m src.account_daily_balance.raw                    # FR-01: land the 6 extracts in raw
+python -m src.account_daily_balance.run --write-ddl        # regenerate sql/ddl from the contracts
 ```
 The end-to-end run (sample data, 100 rows) needs FR-01 to FR-06.
