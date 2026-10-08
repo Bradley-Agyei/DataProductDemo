@@ -1,11 +1,12 @@
 # Data products
 
-Two data products, each built by a tested Python pipeline on the shared contract-driven framework `dp_framework`.
+Three data products, each built by a tested Python pipeline on the shared contract-driven framework `dp_framework`.
 
 | Product | What it is | Start here |
 |---|---|---|
 | `DP_Member_360/` | One governed row per member, from the 8 extracts in `data/raw/` | `PRD_Member_360.md`, `04_code/README.md` |
 | `DP_Fraud_Case/` | One governed row per fraud case, with lifecycle checks, SLA and member/account links | `PRD_Fraud_Case.md`, `04_code/README.md` |
+| `DP_Payment_Transaction/` | One governed row per payment transaction (in progress: FR-01 raw ingestion, SCRUM-44) | `04_code/README.md` |
 
 Each product folder holds:
 - the PRD (`.md` + `.docx`) and data dictionary (`.xlsx`), with a data type for every column

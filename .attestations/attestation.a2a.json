@@ -7,27 +7,27 @@
         {
           "data": {
             "evaluator": {
-              "costUsd": 0.9350096,
-              "model": "claude-sonnet-5",
-              "sessionId": "8c81c437-6364-4674-bdfb-035b2796c027"
+              "costUsd": 0.15251460000000003,
+              "model": "claude-haiku-4-5-20251001",
+              "sessionId": "236d9732-1d5b-4b75-90da-105c2ab356fe"
             },
             "findings": {
               "unverified": [],
               "verified": [
                 {
-                  "ac": "AC-6",
-                  "claim": "The Fraud Case PRD still documents the extract source as data/raw/DP_Fraud_Case.csv, contradicting the pipeline's actual config (config.SOURCE_DIR = data/product), even though the KT doc flags this as a known stale-prose issue elsewhere.",
-                  "file": "output/DP_Fraud_Case/PRD_Fraud_Case.md",
-                  "line": 10,
-                  "quote": "data/raw/DP_Fraud_Case.csv (case-management extract)",
-                  "severity": "LOW"
+                  "ac": "data/raw policy",
+                  "claim": "land_raw writes every data/raw value, including Member first_name, last_name and postal_code, into a SQLite table. The db is git-ignored, but the code still copies raw values and those PII columns.",
+                  "file": "output/DP_Payment_Transaction/04_code/src/payment_transaction/raw.py",
+                  "line": 45,
+                  "quote": "wh.replace(raw_table(sources[name]), df)",
+                  "severity": "HIGH"
                 },
                 {
-                  "ac": "AC-6",
-                  "claim": "The 04_code README still says the extract is read from data/raw/DP_Fraud_Case.csv, but src/fraud_case/config.py reads from data/product/DP_Fraud_Case.csv; this is acknowledged as stale prose in docs/kt/fraud-case/README.md but not corrected here.",
-                  "file": "output/DP_Fraud_Case/04_code/README.md",
-                  "line": 3,
-                  "quote": "data/raw/DP_Fraud_Case.csv`",
+                  "ac": "data/raw policy",
+                  "claim": "The Member contract declares the PII columns that the raw layer then creates as TEXT columns in the db.",
+                  "file": "output/DP_Payment_Transaction/04_code/contracts/sources.py",
+                  "line": 53,
+                  "quote": "C(\"first_name\", \"VARCHAR(50)\"",
                   "severity": "LOW"
                 }
               ]
@@ -58,23 +58,23 @@
                 "name": "unittest"
               }
             ],
-            "modelVerdict": "pass",
-            "promptSha256": "83e427af65188d0086000978d4479d1c2d63b4ec3906fc5b2f8465cf0c82a9e1",
+            "modelVerdict": "fail",
+            "promptSha256": "ab253b3cf73f0117cead85f210886203e63d166353f16e662dd466a0fa7c4c22",
             "review": {
-              "base": "f951259163a6ced5146533e734cc65e748cccdc7",
-              "binaryFiles": 6,
-              "chars": 434339,
-              "files": 116
+              "base": "1d88d3871dc069c401f77b921c1a1abac40b94d9",
+              "binaryFiles": 0,
+              "chars": 69121,
+              "files": 30
             },
             "subject": {
               "algo": "sha256",
-              "digest": "50241781df79d00b9f0e4252994c4638c905077ce5927dfded846d746a59f963",
+              "digest": "7ca8d79283834304299c0a11f20e7fac898429ccf208f1fd764801d3f59d412b",
               "excludes": [
                 ".attestations/"
               ]
             },
-            "summary": "tools/leftshift/attest.py correctly implements the make/verify/review_files behaviour required by AC-5, AC-6 and AC-7 (gate-first ordering with no model call on a red gate, a size refusal before any truncation, staging only on a verdict with no verified HIGH finding, whole-branch diffing with CSV/data/binary/vendored-gate exclusion, and a verify() that rejects missing/stale/failed/non-A2A/missing-gate/red-gate/HIGH-finding attestations), and trace.json's implements-line references for these ACs match the file; tools/leftshift/checks.py (which would implement AC-1\u2013AC-4) is not part of this staged diff so its behaviour could not be verified. No HIGH-severity issues (PII columns or data/raw leakage) were found in the large accompanying Fraud Case/Member 360 product code, which keeps PII columns confined to the raw source contract and excludes them from published tables per its own test; only minor stale-documentation mismatches (PRD/README still citing data/raw instead of data/product) were noted.",
-            "verdict": "pass"
+            "summary": "The change doesn't touch the gate tooling that the left-shift-gates ACs cover, so no AC is contradicted. The pipeline does copy data/raw values, including the first_name, last_name and postal_code columns, into a SQLite raw layer, which the review rules treat as HIGH even though the target is git-ignored and FR-01 asks for it.",
+            "verdict": "fail"
           },
           "mediaType": "application/json"
         }
@@ -84,31 +84,31 @@
   "contextId": "left-shift",
   "history": [
     {
-      "messageId": "msg-0fd8cd18-d618-4827-b3dd-51bc57f5b1e7",
+      "messageId": "msg-b09076da-e1bb-4e97-b846-5dc35681099f",
       "parts": [
         {
-          "text": "review the staged change against its acceptance criteria; prompt sha256 83e427af65188d0086000978d4479d1c2d63b4ec3906fc5b2f8465cf0c82a9e1"
+          "text": "review the staged change against its acceptance criteria; prompt sha256 ab253b3cf73f0117cead85f210886203e63d166353f16e662dd466a0fa7c4c22"
         }
       ],
       "role": "ROLE_USER"
     }
   ],
-  "id": "att-d14cf279-9ffd-4954-89e9-d5d3e8a05b5d",
+  "id": "att-bf5af295-c81c-4807-a9c8-2507573c357d",
   "metadata": {
     "a2aVersion": "1.0.0",
     "producer": "tools/leftshift/attest.py"
   },
   "status": {
     "message": {
-      "messageId": "msg-0972c9d6-4652-418c-8a5d-6b650630bd35",
+      "messageId": "msg-7781b7cc-3819-4ab9-9107-a3294e986aac",
       "parts": [
         {
-          "text": "verdict: pass (0 verified HIGH findings)"
+          "text": "verdict: fail (1 verified HIGH findings)"
         }
       ],
       "role": "ROLE_AGENT"
     },
-    "state": "TASK_STATE_COMPLETED",
-    "timestamp": "2026-10-06T19:13:42Z"
+    "state": "TASK_STATE_FAILED",
+    "timestamp": "2026-10-08T15:49:00Z"
   }
 }
