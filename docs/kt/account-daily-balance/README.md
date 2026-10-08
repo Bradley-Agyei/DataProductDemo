@@ -45,6 +45,7 @@
   - **Paths.** The PRD writes `sources/data/raw/` and `data/output/product/`. The repo uses `data/raw/` and `data/product/`.
   - **No sample yet.** The target sample is shape only (Q1) and isn't committed, so the header test uses the first 11 columns in §6.
   - **Not traced yet.** The OpenSpec change has no `prd.md`, so spec-gate doesn't trace the ACs.
+- **Contract checked against the PRD.** `tests/test_contract_prd.py` reads PRD §6 from the file and checks the contract's column order, types, key, allowed values and the 11 sample columns against it. A PRD edit that the contract doesn't follow fails the build.
 - **Pending columns.** `product_code` (Q6) and `available_balance` (Q5) are `pending`, so they're published as NULL until their stories are unblocked.
 - **Assumptions awaiting sign-off:**
   - **Q2 (Finance):** `Account.current_balance` is the opening balance of the first day. Configurable in `config.FIRST_DAY_OPENING_COLUMN`.

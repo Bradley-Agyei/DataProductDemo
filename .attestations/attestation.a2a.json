@@ -7,22 +7,13 @@
         {
           "data": {
             "evaluator": {
-              "costUsd": 0.14434960000000002,
-              "model": "claude-sonnet-5",
-              "sessionId": "ae6f9144-14d7-49b5-8e6f-f5fc27df477b"
+              "costUsd": 0.1327736,
+              "model": "claude-haiku-4-5-20251001",
+              "sessionId": "103ecda8-40af-470c-85cf-6c741c1e2872"
             },
             "findings": {
               "unverified": [],
-              "verified": [
-                {
-                  "ac": "none (code quality)",
-                  "claim": "When an extra pass-through column (e.g. a totals column other than total_credits/total_debits) has no non-null values anywhere in the merged frame, the zero-fill defaults to a plain int 0 instead of Decimal('0.00'), silently mixing types in a column that should be uniformly Decimal.",
-                  "file": "output/DP_Account_Daily_Balance/04_code/src/account_daily_balance/roll_forward.py",
-                  "line": 62,
-                  "quote": "zero = ZERO if any(isinstance(v, Decimal) for v in rows[col].dropna()) else 0",
-                  "severity": "MEDIUM"
-                }
-              ]
+              "verified": []
             },
             "gates": [
               {
@@ -51,21 +42,21 @@
               }
             ],
             "modelVerdict": "pass",
-            "promptSha256": "0c9869e15e1f3df5f22f8891184780733c6065b9af2d66ae24eabd46d5a32989",
+            "promptSha256": "57ff09afabd1665a0b42eef13ad7ba9fc96874250b79caeba131a0f6e645c16f",
             "review": {
-              "base": "a17bf1ee5f6766e538b6b7e01dbfe5dd365e0d4d",
+              "base": "d8dc5ef08041cd5c7b0ed6c794864472171d8319",
               "binaryFiles": 0,
-              "chars": 41320,
-              "files": 10
+              "chars": 59587,
+              "files": 28
             },
             "subject": {
               "algo": "sha256",
-              "digest": "529db5bc68227679c6ac90d4f3e498917c974dee6fd3c5ffc66adfd5a25a3d8b",
+              "digest": "bbf6f77711fd836016576e42a02b8d2bccde430d558ae9a00f71676a0b386321",
               "excludes": [
                 ".attestations/"
               ]
             },
-            "summary": "The diff (SCRUM-40 roll-forward code, docs and OpenSpec change) is internally consistent: every OpenSpec Requirement has a Scenario, no data/raw files are touched or printed, no PII-named columns are introduced, and the docs/kt file is part of the change, so it does not conflict with any left-shift-gates AC. One narrow MEDIUM-severity type-consistency edge case was found in the extra-column zero-fill logic, but it does not violate any acceptance criterion.",
+            "summary": "The change adds the llm-wiki skill, aligns the Payment Transaction contracts to the PRD, and adds tests and docs; it doesn't touch the left-shift gate code, so none of AC-1 to AC-7 are affected. I found no problems I could point at in the staged files.",
             "verdict": "pass"
           },
           "mediaType": "application/json"
@@ -76,23 +67,23 @@
   "contextId": "left-shift",
   "history": [
     {
-      "messageId": "msg-054973a2-3816-450b-a985-49fad8acd256",
+      "messageId": "msg-9f43baed-3124-4dd8-8fda-0d6049f792f9",
       "parts": [
         {
-          "text": "review the staged change against its acceptance criteria; prompt sha256 0c9869e15e1f3df5f22f8891184780733c6065b9af2d66ae24eabd46d5a32989"
+          "text": "review the staged change against its acceptance criteria; prompt sha256 57ff09afabd1665a0b42eef13ad7ba9fc96874250b79caeba131a0f6e645c16f"
         }
       ],
       "role": "ROLE_USER"
     }
   ],
-  "id": "att-7d9cd55f-bd48-4e8e-95c5-540bc29d3472",
+  "id": "att-61de6338-51e9-48b9-ae67-871a9d55f440",
   "metadata": {
     "a2aVersion": "1.0.0",
     "producer": "tools/leftshift/attest.py"
   },
   "status": {
     "message": {
-      "messageId": "msg-e9159613-5f56-440c-841a-09f34447808c",
+      "messageId": "msg-ff0d95fc-5ac7-4f4f-9102-bd25d2035150",
       "parts": [
         {
           "text": "verdict: pass (0 verified HIGH findings)"
@@ -101,6 +92,6 @@
       "role": "ROLE_AGENT"
     },
     "state": "TASK_STATE_COMPLETED",
-    "timestamp": "2026-10-08T19:44:54Z"
+    "timestamp": "2026-10-08T21:21:22Z"
   }
 }
