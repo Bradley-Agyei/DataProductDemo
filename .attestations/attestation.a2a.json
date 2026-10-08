@@ -7,13 +7,30 @@
         {
           "data": {
             "evaluator": {
-              "costUsd": 0.1929476,
+              "costUsd": 0.0950966,
               "model": "claude-haiku-4-5-20251001",
-              "sessionId": "9ed6ac78-b9cd-49a4-81c1-958850ac6552"
+              "sessionId": "aed0b37c-fe33-4f3c-ac87-7e8f37790389"
             },
             "findings": {
               "unverified": [],
-              "verified": []
+              "verified": [
+                {
+                  "ac": "AC-2",
+                  "claim": "PRD FR-01 says to land Member unchanged, but \u00a74 and \u00a79 forbid PII, and the KT and code READMEs say the raw layer masks it. The PRD should be updated to match the implemented behaviour.",
+                  "file": "output/DP_Payment_Transaction/PRD_Payment_Transaction.md",
+                  "line": 250,
+                  "quote": "Load Transaction, Transaction_Type, Channel, Date, Branch, Account and Member unchanged into raw",
+                  "severity": "LOW"
+                },
+                {
+                  "ac": "AC-1",
+                  "claim": "The PRD copies specific amounts from the raw extracts (here, Fee debit amounts on one account) into a tracked document. They are not PII, but they are literal values taken from data/raw.",
+                  "file": "output/DP_Payment_Transaction/PRD_Payment_Transaction.md",
+                  "line": 317,
+                  "quote": "A00003 has Fee debits of $2,150.48 and $2,199.00.",
+                  "severity": "LOW"
+                }
+              ]
             },
             "gates": [
               {
@@ -42,21 +59,21 @@
               }
             ],
             "modelVerdict": "pass",
-            "promptSha256": "faaf84b90426febe244ac6ccc25daa9c33152ac73ba4446a3e87d58bc36c97e6",
+            "promptSha256": "a19fe608c2e3ef81b4625bcd2e621fd70117314ca9c2cec229aff0fb8503deb1",
             "review": {
-              "base": "04232dfb0c82c6372e02ca98345ec0d8330011b5",
+              "base": "7868cf1808ade104cca8f0a5b4d75ea9b9fa8d56",
               "binaryFiles": 0,
-              "chars": 89950,
-              "files": 37
+              "chars": 38485,
+              "files": 4
             },
             "subject": {
               "algo": "sha256",
-              "digest": "bc29ac2bcfaa3be6017aa988c74e554b6ca6f5a3df905438659378e040cf8adb",
+              "digest": "2cee888187e7b97212f5c505f7c1dfd4df8ec5ae533670aa330b38ffd504f9b8",
               "excludes": [
                 ".attestations/"
               ]
             },
-            "summary": "The staged change adds the Account Daily Balance publish step, with its docs and tests. It adds no left-shift-gates code, so AC-1 to AC-7 have nothing in this diff to contradict, and I found no HIGH issues.",
+            "summary": "The change only adds documentation, so none of the left-shift-gates ACs are affected, and I found no HIGH issues. The PRD still contradicts the masking behaviour the READMEs describe, and it quotes a few values from the raw extracts.",
             "verdict": "pass"
           },
           "mediaType": "application/json"
@@ -67,23 +84,23 @@
   "contextId": "left-shift",
   "history": [
     {
-      "messageId": "msg-3c8a060a-8082-4364-9aa6-32b7d7d4c1ca",
+      "messageId": "msg-6f192ae9-00c5-4e3e-97c4-05155fb6d2bd",
       "parts": [
         {
-          "text": "review the staged change against its acceptance criteria; prompt sha256 faaf84b90426febe244ac6ccc25daa9c33152ac73ba4446a3e87d58bc36c97e6"
+          "text": "review the staged change against its acceptance criteria; prompt sha256 a19fe608c2e3ef81b4625bcd2e621fd70117314ca9c2cec229aff0fb8503deb1"
         }
       ],
       "role": "ROLE_USER"
     }
   ],
-  "id": "att-fc124beb-0631-44b0-8f82-712e58a3ab13",
+  "id": "att-28b32427-3c84-40bb-935f-300fa171e360",
   "metadata": {
     "a2aVersion": "1.0.0",
     "producer": "tools/leftshift/attest.py"
   },
   "status": {
     "message": {
-      "messageId": "msg-64f7e216-1ca1-4651-9617-aed95e44582c",
+      "messageId": "msg-a8bec4ed-61bf-4016-8ca7-d7b228e1d7e9",
       "parts": [
         {
           "text": "verdict: pass (0 verified HIGH findings)"
@@ -92,6 +109,6 @@
       "role": "ROLE_AGENT"
     },
     "state": "TASK_STATE_COMPLETED",
-    "timestamp": "2026-10-08T18:14:18Z"
+    "timestamp": "2026-10-08T19:01:32Z"
   }
 }
