@@ -1,8 +1,7 @@
-"""Product contract: account_daily_balance (target schema from Jira epic SCRUM-35, PRD §6).
+"""Product contract: account_daily_balance (PRD_Account_Daily_Balance.md §6).
 
-The PRD and data dictionary are not in the repo yet; types, rules and order follow
-the epic's target schema table. Column order is publish order: the first 11
-columns are the sample columns.
+Column order is publish order: the 11 sample columns, then derived, then audit
+(PRD §6). product_code (Q6) and available_balance (Q5) are pending.
 """
 from src.dp_framework.contract import PENDING, Column as C, Table
 

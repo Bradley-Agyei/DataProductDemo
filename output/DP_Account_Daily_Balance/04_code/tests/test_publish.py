@@ -94,6 +94,16 @@ def test_critical_failure_blocks_and_keeps_previous_product(tmp_path, rule_id):
     assert bad.run_log.loc[0, "status"] == "BLOCKED" and bad.run_log.loc[0, "rows_out"] == 0
 
 
+def test_dq07_catches_offsetting_credit_and_debit_errors(tmp_path):
+    """Net movement still matches, but credits and debits each differ from source (PRD §10 DQ-07)."""
+    counted = pd.concat([make_counted(), pd.DataFrame({"account_id": ["A0000001", "A0000001"],
+                                                        "signed_amount": [D("25.00"), D("-25.00")]})],
+                        ignore_index=True)
+    res = run_publish(tmp_path, counted=counted)
+    assert res.status == "BLOCKED"
+    assert res.dq_results.set_index("rule_id").loc["DQ-07", ["status", "rows_failed"]].tolist() == ["Fail", 1]
+
+
 def test_blocked_first_run_publishes_nothing(tmp_path):
     product, counted = _break("DQ-05")
     res = run_publish(tmp_path, product=product, counted=counted)
