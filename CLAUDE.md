@@ -32,9 +32,9 @@ data/raw/        Source extracts standing in for microservice feeds (read-only)
 data/product/    Data product output
 _bmad/           BMAD framework — scripts, templates, config
 _bmad-output/    Deliverables (planning-artifacts/prds/, party-mode/)
-.claude/skills/  Workflow skills (BMAD + openspec)
-openspec/        Spec scaffolding — present but not yet used
-wiki/            Wiki scaffolding — present but not yet used
+.claude/skills/  Workflow skills (BMAD + openspec + llm-wiki); only skills/ is tracked
+openspec/        OpenSpec changes (openspec/changes/) and specs, checked by the openspec, scenarios and spec-gate gates
+wiki/            LLM Wiki (llm-wiki skill): sources in wiki/raw/ (read-only), pages, index.md, log.md
 ```
 
 ## Conventions

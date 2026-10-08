@@ -7,19 +7,19 @@
         {
           "data": {
             "evaluator": {
-              "costUsd": 0.0967266,
+              "costUsd": 0.1274276,
               "model": "claude-haiku-4-5-20251001",
-              "sessionId": "d0be0720-779e-466f-839f-4919d38d7fe0"
+              "sessionId": "64e3a828-e92d-4a5c-b0f3-4fc3c13a4cd2"
             },
             "findings": {
               "unverified": [],
               "verified": [
                 {
                   "ac": "AC-2",
-                  "claim": "On failure this assertion prints the raw foreign-key values from data/raw. They are IDs, not PII, but the header comment says assertions report counts and key values only, so the behaviour is the documented intent. Reporting counts would be safer if an ID column ever carried sensitive values.",
-                  "file": "output/DP_Payment_Transaction/04_code/tests/test_source_contract.py",
-                  "line": 112,
-                  "quote": "orphans = sorted(set(raw(table)[column]) - set(raw(parent)[parent_column]))",
+                  "claim": "README says the .db file and out/ are git-ignored, but the root .gitignore shown has no entry for them. A nested ignore file may exist, but none is in this change, so landed raw tables could be committed.",
+                  "file": "output/DP_Payment_Transaction/04_code/README.md",
+                  "line": 15,
+                  "quote": "git-ignored anyway",
                   "severity": "LOW"
                 }
               ]
@@ -51,21 +51,21 @@
               }
             ],
             "modelVerdict": "pass",
-            "promptSha256": "7af8ac83b45087dd7dad7fdfe223745677bb4c8ee71cde95c6570b3e922e116c",
+            "promptSha256": "d5acea7ae5a27d8dd73d1f6a39ea8a213ce3d97abcd48830a24894564d196f71",
             "review": {
               "base": "a17bf1ee5f6766e538b6b7e01dbfe5dd365e0d4d",
               "binaryFiles": 0,
-              "chars": 41685,
-              "files": 12
+              "chars": 56840,
+              "files": 28
             },
             "subject": {
               "algo": "sha256",
-              "digest": "183f5d5a805ff95b072444dc668b7eeb67d5cf18a795b33091538294c6bbf242",
+              "digest": "1771b1d3b3afc12523e1c425e7f0adac1b6ec733f9d5e738cdc43923b58a4ca3",
               "excludes": [
                 ".attestations/"
               ]
             },
-            "summary": "The change aligns the Payment Transaction source contracts and PII masking to the PRD and adds contract tests. It doesn't touch the left-shift gate code, so I found no AC violations; the one finding is low severity.",
+            "summary": "The change touches only docs, the wiki scaffold, contracts and tests, not the left-shift gate code, and I found no HIGH issue. The tests I read assert only on counts and key values and never PII values. One LOW note: a README claim that the .db file and out/ are git-ignored isn't backed by the root .gitignore.",
             "verdict": "pass"
           },
           "mediaType": "application/json"
@@ -76,23 +76,23 @@
   "contextId": "left-shift",
   "history": [
     {
-      "messageId": "msg-98cd06c7-1ed7-43d9-9c55-acaf081f43b8",
+      "messageId": "msg-65c8307c-3500-4725-8168-8d175f590bbe",
       "parts": [
         {
-          "text": "review the staged change against its acceptance criteria; prompt sha256 7af8ac83b45087dd7dad7fdfe223745677bb4c8ee71cde95c6570b3e922e116c"
+          "text": "review the staged change against its acceptance criteria; prompt sha256 d5acea7ae5a27d8dd73d1f6a39ea8a213ce3d97abcd48830a24894564d196f71"
         }
       ],
       "role": "ROLE_USER"
     }
   ],
-  "id": "att-308f8473-ee9f-4df7-a465-789f96d583f5",
+  "id": "att-416597be-1ac5-40ff-8791-ca4b8a16f91f",
   "metadata": {
     "a2aVersion": "1.0.0",
     "producer": "tools/leftshift/attest.py"
   },
   "status": {
     "message": {
-      "messageId": "msg-5402b881-6509-4303-a627-15d015af8d31",
+      "messageId": "msg-f145ffba-2732-435f-af8e-c34a2954e765",
       "parts": [
         {
           "text": "verdict: pass (0 verified HIGH findings)"
@@ -101,6 +101,6 @@
       "role": "ROLE_AGENT"
     },
     "state": "TASK_STATE_COMPLETED",
-    "timestamp": "2026-10-08T20:06:12Z"
+    "timestamp": "2026-10-08T20:44:32Z"
   }
 }
