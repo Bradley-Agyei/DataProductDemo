@@ -4,27 +4,15 @@
 
 `DP_Account_Daily_Balance` (Jira epic SCRUM-35) will publish one governed row per account per calendar day: opening, credits, debits, closing, available balance and overdraft flag. Its users are Finance & reporting and Fraud & risk. It's the fourth product on `dp_framework`.
 
-**FR-02, standardization (SCRUM-38)**, **FR-04, roll-forward (SCRUM-40)** and **FR-07, publish (SCRUM-43)** exist so far. FR-07 is the gate and outputs; FR-02 conforms the raw sources, and FR-04 builds the balance chain.
+**FR-04, roll-forward (SCRUM-40)** and **FR-07, publish (SCRUM-43)** exist so far. FR-07 is the gate and outputs; FR-04 builds the balance chain.
 
 | Piece | What it does | Start here |
 |---|---|---|
 | `output/DP_Account_Daily_Balance/PRD_Account_Daily_Balance.md` | PRD: target schema, mapping, FR-01 to FR-07, DQ rules, open questions | sections 6, 8 and 10 |
 | `output/DP_Account_Daily_Balance/04_code/` | Contract, publish step, roll-forward, DQ rules and tests | `04_code/README.md` |
 | `openspec/changes/scrum-40-account-daily-balance-roll-forward/` | FR-04 requirements and scenarios | `proposal.md` |
-| `openspec/changes/scrum-38-standardize-conform-ids/` | FR-02 requirements and scenarios | `proposal.md` |
 | `openspec/changes/scrum-43-account-daily-balance-publish/` | FR-07 requirements and scenarios | `proposal.md` |
-| Jira SCRUM-37, SCRUM-39, SCRUM-41 and SCRUM-42 | FR-01, FR-03, FR-05 and FR-06 (ingest, totals, overdraft, attributes) | the stories |
-
-## How source standardization works
-
-`standardize_sources()` in `src/account_daily_balance/standardize.py` takes the
-six raw frames produced by FR-01 and returns one typed frame per source plus
-row-level rejects. It applies the shared framework parser and the source
-contracts, conforms core banking account IDs with
-`data/reference/account_id_map.csv`, and left-pads member IDs to six digits.
-Invalid values and duplicate keys are rejected; an account with no eligible
-mapping is rejected as `DQ-08`. The Member contract includes only fields FR-01
-retains outside the raw PII boundary.
+| Jira SCRUM-37 to SCRUM-42 | FR-01 to FR-03 (ingest, standardize, totals), FR-05 to FR-06 (overdraft, attributes) | the stories |
 
 ## How the roll-forward works
 

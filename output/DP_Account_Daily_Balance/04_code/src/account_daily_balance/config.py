@@ -13,8 +13,6 @@ SAMPLE_COLUMNS = ("balance_date", "account_id", "member_id", "product_code", "ac
                   "opening_balance", "total_credits", "total_debits", "closing_balance",
                   "available_balance", "overdraft_flag")
 
-ACCOUNT_ID_MAP_PATH = PROJECT_ROOT / "data" / "reference" / "account_id_map.csv"
-
 DB_PATH = CODE_DIR / "account_daily_balance.db"
 OUT_DIR = CODE_DIR / "out"
 DDL_DIR = CODE_DIR / "sql" / "ddl"
@@ -47,6 +45,6 @@ CONTRACT_META = {
     "refresh": "Daily full rebuild, ready by 07:00 ET",
     "change_policy": "New columns are additive; type changes need 30 days' notice",
     "source_prd": "output/DP_Account_Daily_Balance/PRD_Account_Daily_Balance.md",
-    "jira": "SCRUM-35 (FR-02: SCRUM-38, FR-04: SCRUM-40, FR-07: SCRUM-43)",
+    "jira": "SCRUM-35 (FR-04: SCRUM-40, FR-07: SCRUM-43)",
     "pii": "None published; any PII value is masked with * before write",
 }
