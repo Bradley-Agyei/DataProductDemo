@@ -2,7 +2,22 @@
 
 Account Daily Balance data product (Jira epic SCRUM-35, PRD `../PRD_Account_Daily_Balance.md`): one governed row per account per calendar day. Built on the shared `dp_framework`, the same as the other products.
 
-**FR-04 roll-forward (SCRUM-40)** and **FR-07 publish (SCRUM-43)** are built. FR-01 to FR-03 (SCRUM-37 to 39) and FR-05 to FR-06 (SCRUM-41 to 42) will complete the pipeline.
+**FR-02 standardization (SCRUM-38)**, **FR-04 roll-forward (SCRUM-40)** and **FR-07 publish (SCRUM-43)** are built. FR-01 (SCRUM-37), FR-03 (SCRUM-39) and FR-05 to FR-06 (SCRUM-41 to 42) will complete the pipeline.
+
+## FR-02 Standardize types and conform IDs (SCRUM-38)
+
+`src/account_daily_balance/standardize.py: standardize_sources()` accepts the six
+raw frames produced by FR-01, casts them using `contracts/sources.py` and the
+shared `dp_framework.standardize` parser, and returns `(typed_frames, rejects)`.
+Account IDs in Account and Transaction are mapped through the `core_banking`
+rows in `data/reference/account_id_map.csv`; member IDs are left-padded to six
+digits. Amount strings support currency decoration and parenthesized negatives.
+Dates, date keys, booleans and integer fields are parsed to their declared types.
+An unmapped account is excluded with reason `DQ-08`; parse failures and all copies
+of duplicate primary keys are also returned as row-level rejects.
+
+Member's source contract contains only the non-PII columns retained by FR-01.
+Source extracts remain read-only.
 
 ## FR-04 Balance roll-forward (SCRUM-40)
 
@@ -55,4 +70,4 @@ pip install -r requirements.txt
 pytest -q
 python -m src.account_daily_balance.run --write-ddl   # regenerate sql/ddl from the contracts
 ```
-`pytest -q` includes the FR-04 sample acceptance tests (100 rows via the test loader) and all FR-07 tests. The end-to-end run (full product CSV to `data/product/`) needs FR-01 to FR-06 wired into `publish()`.
+`pytest -q` includes FR-02 sample and conversion tests, the FR-04 sample acceptance tests (100 rows via the test loader) and all FR-07 tests. The end-to-end run (full product CSV to `data/product/`) needs FR-01 to FR-06 wired into `publish()`.
