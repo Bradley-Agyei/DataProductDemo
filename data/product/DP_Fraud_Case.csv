@@ -1,0 +1,101 @@
+case_id,member_id,primary_account_id,case_open_ts,case_type,alert_source,case_status,priority,suspected_loss_amount,confirmed_loss_amount,assigned_queue,resolution_code,case_close_ts
+FC0000001,M000001,A0000001,8/1/2026 8:00,Account Takeover,ML Model,Investigating,Medium,$237.19 ,$0.00 ,Deposit Ops,,
+FC0000002,M000002,A0000002,8/1/2026 16:00,ACH Fraud,Member Report,Closed,High,$374.38 ,$299.50 ,Digital Fraud,Confirmed Fraud,8/4/2026 16:00
+FC0000003,M000003,A0000003,8/2/2026 0:00,Wire Fraud,Operations Review,Closed,Critical,$511.57 ,$0.00 ,Enhanced Review,False Positive,8/6/2026 0:00
+FC0000004,M000004,A0000004,8/2/2026 8:00,Identity Review,Rules Engine,Escalated,Low,$648.76 ,$0.00 ,Card Ops,,
+FC0000005,M000005,A0000005,8/2/2026 16:00,Card Fraud,ML Model,Open,Medium,$785.95 ,$0.00 ,Deposit Ops,,
+FC0000006,M000006,A0000006,8/3/2026 0:00,Account Takeover,Member Report,Investigating,High,$923.14 ,$0.00 ,Digital Fraud,,
+FC0000007,M000007,A0000007,8/3/2026 8:00,ACH Fraud,Operations Review,Closed,Critical,"$1,060.33 ",$371.12 ,Enhanced Review,Confirmed Fraud,8/11/2026 8:00
+FC0000008,M000008,A0000008,8/3/2026 16:00,Wire Fraud,Rules Engine,Closed,Low,"$1,197.52 ",$958.02 ,Card Ops,Confirmed Fraud,8/12/2026 16:00
+FC0000009,M000009,A0000009,8/4/2026 0:00,Identity Review,ML Model,Escalated,Medium,"$1,334.71 ",$0.00 ,Deposit Ops,,
+FC0000010,M000010,A0000010,8/4/2026 8:00,Card Fraud,Member Report,Open,High,"$1,471.90 ",$0.00 ,Digital Fraud,,
+FC0000011,M000011,A0000011,8/4/2026 16:00,Account Takeover,Operations Review,Investigating,Critical,"$1,609.09 ",$0.00 ,Enhanced Review,,
+FC0000012,M000012,A0000012,8/5/2026 0:00,ACH Fraud,Rules Engine,Closed,Low,"$1,746.28 ",$0.00 ,Card Ops,False Positive,8/6/2026 0:00
+FC0000013,M000013,A0000013,8/5/2026 8:00,Wire Fraud,ML Model,Closed,Medium,"$1,883.47 ",$659.21 ,Deposit Ops,Confirmed Fraud,8/7/2026 8:00
+FC0000014,M000014,A0000014,8/5/2026 16:00,Identity Review,Member Report,Escalated,High,"$2,020.66 ",$0.00 ,Digital Fraud,,
+FC0000015,M000015,A0000015,8/6/2026 0:00,Card Fraud,Operations Review,Open,Critical,"$2,157.85 ",$0.00 ,Enhanced Review,,
+FC0000016,M000016,A0000016,8/6/2026 8:00,Account Takeover,Rules Engine,Investigating,Low,"$2,295.04 ",$0.00 ,Card Ops,,
+FC0000017,M000017,A0000017,8/6/2026 16:00,ACH Fraud,ML Model,Closed,Medium,"$2,432.23 ","$1,945.78 ",Deposit Ops,Confirmed Fraud,8/12/2026 16:00
+FC0000018,M000018,A0000018,8/7/2026 0:00,Wire Fraud,Member Report,Closed,High,"$2,569.42 ",$0.00 ,Digital Fraud,False Positive,8/14/2026 0:00
+FC0000019,M000019,A0000019,8/7/2026 8:00,Identity Review,Operations Review,Escalated,Critical,"$2,706.61 ",$0.00 ,Enhanced Review,,
+FC0000020,M000020,A0000020,8/7/2026 16:00,Card Fraud,Rules Engine,Open,Low,"$2,843.80 ",$0.00 ,Card Ops,,
+FC0000021,M000021,A0000021,8/8/2026 0:00,Account Takeover,ML Model,Investigating,Medium,"$2,980.99 ",$0.00 ,Deposit Ops,,
+FC0000022,M000022,A0000022,8/8/2026 8:00,ACH Fraud,Member Report,Closed,High,"$3,118.18 ","$1,091.36 ",Digital Fraud,Confirmed Fraud,8/19/2026 8:00
+FC0000023,M000023,A0000023,8/8/2026 16:00,Wire Fraud,Operations Review,Closed,Critical,"$3,255.37 ","$2,604.30 ",Enhanced Review,Confirmed Fraud,8/20/2026 16:00
+FC0000024,M000024,A0000024,8/9/2026 0:00,Identity Review,Rules Engine,Escalated,Low,"$3,392.56 ",$0.00 ,Card Ops,,
+FC0000025,M000025,A0000025,8/9/2026 8:00,Card Fraud,ML Model,Open,Medium,"$3,529.75 ",$0.00 ,Deposit Ops,,
+FC0000026,M000026,A0000026,8/9/2026 16:00,Account Takeover,Member Report,Investigating,High,"$3,666.94 ",$0.00 ,Digital Fraud,,
+FC0000027,M000027,A0000027,8/10/2026 0:00,ACH Fraud,Operations Review,Closed,Critical,"$3,804.13 ",$0.00 ,Enhanced Review,False Positive,8/14/2026 0:00
+FC0000028,M000028,A0000028,8/10/2026 8:00,Wire Fraud,Rules Engine,Closed,Low,"$3,941.32 ","$1,379.46 ",Card Ops,Confirmed Fraud,8/15/2026 8:00
+FC0000029,M000029,A0000029,8/10/2026 16:00,Identity Review,ML Model,Escalated,Medium,"$4,078.51 ",$0.00 ,Deposit Ops,,
+FC0000030,M000030,A0000030,8/11/2026 0:00,Card Fraud,Member Report,Open,High,"$4,215.70 ",$0.00 ,Digital Fraud,,
+FC0000031,M000031,A0000031,8/11/2026 8:00,Account Takeover,Operations Review,Investigating,Critical,"$4,352.89 ",$0.00 ,Enhanced Review,,
+FC0000032,M000032,A0000032,8/11/2026 16:00,ACH Fraud,Rules Engine,Closed,Low,"$4,490.08 ","$3,592.06 ",Card Ops,Confirmed Fraud,8/20/2026 16:00
+FC0000033,M000033,A0000033,8/12/2026 0:00,Wire Fraud,ML Model,Closed,Medium,"$4,627.27 ",$0.00 ,Deposit Ops,False Positive,8/22/2026 0:00
+FC0000034,M000034,A0000034,8/12/2026 8:00,Identity Review,Member Report,Escalated,High,"$4,764.46 ",$0.00 ,Digital Fraud,,
+FC0000035,M000035,A0000035,8/12/2026 16:00,Card Fraud,Operations Review,Open,Critical,"$4,901.65 ",$0.00 ,Enhanced Review,,
+FC0000036,M000036,A0000036,8/13/2026 0:00,Account Takeover,Rules Engine,Investigating,Low,"$5,038.84 ",$0.00 ,Card Ops,,
+FC0000037,M000037,A0000037,8/13/2026 8:00,ACH Fraud,ML Model,Closed,Medium,"$5,176.03 ","$1,811.61 ",Deposit Ops,Confirmed Fraud,8/15/2026 8:00
+FC0000038,M000038,A0000038,8/13/2026 16:00,Wire Fraud,Member Report,Closed,High,"$5,313.22 ","$4,250.58 ",Digital Fraud,Confirmed Fraud,8/16/2026 16:00
+FC0000039,M000039,A0000039,8/14/2026 0:00,Identity Review,Operations Review,Escalated,Critical,"$5,450.41 ",$0.00 ,Enhanced Review,,
+FC0000040,M000040,A0000040,8/14/2026 8:00,Card Fraud,Rules Engine,Open,Low,"$5,587.60 ",$0.00 ,Card Ops,,
+FC0000041,M000041,A0000041,8/14/2026 16:00,Account Takeover,ML Model,Investigating,Medium,"$5,724.79 ",$0.00 ,Deposit Ops,,
+FC0000042,M000042,A0000042,8/15/2026 0:00,ACH Fraud,Member Report,Closed,High,"$5,861.98 ",$0.00 ,Digital Fraud,False Positive,8/22/2026 0:00
+FC0000043,M000043,A0000043,8/15/2026 8:00,Wire Fraud,Operations Review,Closed,Critical,"$5,999.17 ","$2,099.71 ",Enhanced Review,Confirmed Fraud,8/23/2026 8:00
+FC0000044,M000044,A0000044,8/15/2026 16:00,Identity Review,Rules Engine,Escalated,Low,"$6,136.36 ",$0.00 ,Card Ops,,
+FC0000045,M000045,A0000045,8/16/2026 0:00,Card Fraud,ML Model,Open,Medium,"$6,273.55 ",$0.00 ,Deposit Ops,,
+FC0000046,M000046,A0000046,8/16/2026 8:00,Account Takeover,Member Report,Investigating,High,"$6,410.74 ",$0.00 ,Digital Fraud,,
+FC0000047,M000047,A0000047,8/16/2026 16:00,ACH Fraud,Operations Review,Closed,Critical,"$6,547.93 ","$5,238.34 ",Enhanced Review,Confirmed Fraud,8/28/2026 16:00
+FC0000048,M000048,A0000048,8/17/2026 0:00,Wire Fraud,Rules Engine,Closed,Low,"$6,685.12 ",$0.00 ,Card Ops,False Positive,8/18/2026 0:00
+FC0000049,M000049,A0000049,8/17/2026 8:00,Identity Review,ML Model,Escalated,Medium,"$6,822.31 ",$0.00 ,Deposit Ops,,
+FC0000050,M000050,A0000050,8/17/2026 16:00,Card Fraud,Member Report,Open,High,"$6,959.50 ",$0.00 ,Digital Fraud,,
+FC0000051,M000051,A0000051,8/18/2026 0:00,Account Takeover,Operations Review,Investigating,Critical,"$7,096.69 ",$0.00 ,Enhanced Review,,
+FC0000052,M000052,A0000052,8/18/2026 8:00,ACH Fraud,Rules Engine,Closed,Low,"$7,233.88 ","$2,531.86 ",Card Ops,Confirmed Fraud,8/23/2026 8:00
+FC0000053,M000053,A0000053,8/18/2026 16:00,Wire Fraud,ML Model,Closed,Medium,"$7,371.07 ","$5,896.86 ",Deposit Ops,Confirmed Fraud,8/24/2026 16:00
+FC0000054,M000054,A0000054,8/19/2026 0:00,Identity Review,Member Report,Escalated,High,"$7,508.26 ",$0.00 ,Digital Fraud,,
+FC0000055,M000055,A0000055,8/19/2026 8:00,Card Fraud,Operations Review,Open,Critical,"$7,645.45 ",$0.00 ,Enhanced Review,,
+FC0000056,M000056,A0000056,8/19/2026 16:00,Account Takeover,Rules Engine,Investigating,Low,"$7,782.64 ",$0.00 ,Card Ops,,
+FC0000057,M000057,A0000057,8/20/2026 0:00,ACH Fraud,ML Model,Closed,Medium,"$7,919.83 ",$0.00 ,Deposit Ops,False Positive,8/30/2026 0:00
+FC0000058,M000058,A0000058,8/20/2026 8:00,Wire Fraud,Member Report,Closed,High,"$8,057.02 ","$2,819.96 ",Digital Fraud,Confirmed Fraud,8/31/2026 8:00
+FC0000059,M000059,A0000059,8/20/2026 16:00,Identity Review,Operations Review,Escalated,Critical,"$8,194.21 ",$0.00 ,Enhanced Review,,
+FC0000060,M000060,A0000060,8/21/2026 0:00,Card Fraud,Rules Engine,Open,Low,"$8,331.40 ",$0.00 ,Card Ops,,
+FC0000061,M000061,A0000061,8/21/2026 8:00,Account Takeover,ML Model,Investigating,Medium,"$8,468.59 ",$0.00 ,Deposit Ops,,
+FC0000062,M000062,A0000062,8/21/2026 16:00,ACH Fraud,Member Report,Closed,High,$105.78 ,$84.62 ,Digital Fraud,Confirmed Fraud,8/24/2026 16:00
+FC0000063,M000063,A0000063,8/22/2026 0:00,Wire Fraud,Operations Review,Closed,Critical,$242.97 ,$0.00 ,Enhanced Review,False Positive,8/26/2026 0:00
+FC0000064,M000064,A0000064,8/22/2026 8:00,Identity Review,Rules Engine,Escalated,Low,$380.16 ,$0.00 ,Card Ops,,
+FC0000065,M000065,A0000065,8/22/2026 16:00,Card Fraud,ML Model,Open,Medium,$517.35 ,$0.00 ,Deposit Ops,,
+FC0000066,M000066,A0000066,8/23/2026 0:00,Account Takeover,Member Report,Investigating,High,$654.54 ,$0.00 ,Digital Fraud,,
+FC0000067,M000067,A0000067,8/23/2026 8:00,ACH Fraud,Operations Review,Closed,Critical,$791.73 ,$277.11 ,Enhanced Review,Confirmed Fraud,8/31/2026 8:00
+FC0000068,M000068,A0000068,8/23/2026 16:00,Wire Fraud,Rules Engine,Closed,Low,$928.92 ,$743.14 ,Card Ops,Confirmed Fraud,9/1/2026 16:00
+FC0000069,M000069,A0000069,8/24/2026 0:00,Identity Review,ML Model,Escalated,Medium,"$1,066.11 ",$0.00 ,Deposit Ops,,
+FC0000070,M000070,A0000070,8/24/2026 8:00,Card Fraud,Member Report,Open,High,"$1,203.30 ",$0.00 ,Digital Fraud,,
+FC0000071,M000071,A0000071,8/24/2026 16:00,Account Takeover,Operations Review,Investigating,Critical,"$1,340.49 ",$0.00 ,Enhanced Review,,
+FC0000072,M000072,A0000072,8/25/2026 0:00,ACH Fraud,Rules Engine,Closed,Low,"$1,477.68 ",$0.00 ,Card Ops,False Positive,8/26/2026 0:00
+FC0000073,M000073,A0000073,8/25/2026 8:00,Wire Fraud,ML Model,Closed,Medium,"$1,614.87 ",$565.20 ,Deposit Ops,Confirmed Fraud,8/27/2026 8:00
+FC0000074,M000074,A0000074,8/25/2026 16:00,Identity Review,Member Report,Escalated,High,"$1,752.06 ",$0.00 ,Digital Fraud,,
+FC0000075,M000075,A0000075,8/26/2026 0:00,Card Fraud,Operations Review,Open,Critical,"$1,889.25 ",$0.00 ,Enhanced Review,,
+FC0000076,M000076,A0000076,8/26/2026 8:00,Account Takeover,Rules Engine,Investigating,Low,"$2,026.44 ",$0.00 ,Card Ops,,
+FC0000077,M000077,A0000077,8/26/2026 16:00,ACH Fraud,ML Model,Closed,Medium,"$2,163.63 ","$1,730.90 ",Deposit Ops,Confirmed Fraud,9/1/2026 16:00
+FC0000078,M000078,A0000078,8/27/2026 0:00,Wire Fraud,Member Report,Closed,High,"$2,300.82 ",$0.00 ,Digital Fraud,False Positive,9/3/2026 0:00
+FC0000079,M000079,A0000079,8/27/2026 8:00,Identity Review,Operations Review,Escalated,Critical,"$2,438.01 ",$0.00 ,Enhanced Review,,
+FC0000080,M000080,A0000080,8/27/2026 16:00,Card Fraud,Rules Engine,Open,Low,"$2,575.20 ",$0.00 ,Card Ops,,
+FC0000081,M000081,A0000081,8/28/2026 0:00,Account Takeover,ML Model,Investigating,Medium,"$2,712.39 ",$0.00 ,Deposit Ops,,
+FC0000082,M000082,A0000082,8/28/2026 8:00,ACH Fraud,Member Report,Closed,High,"$2,849.58 ",$997.35 ,Digital Fraud,Confirmed Fraud,9/8/2026 8:00
+FC0000083,M000083,A0000083,8/28/2026 16:00,Wire Fraud,Operations Review,Closed,Critical,"$2,986.77 ","$2,389.42 ",Enhanced Review,Confirmed Fraud,9/9/2026 16:00
+FC0000084,M000084,A0000084,8/29/2026 0:00,Identity Review,Rules Engine,Escalated,Low,"$3,123.96 ",$0.00 ,Card Ops,,
+FC0000085,M000085,A0000085,8/29/2026 8:00,Card Fraud,ML Model,Open,Medium,"$3,261.15 ",$0.00 ,Deposit Ops,,
+FC0000086,M000086,A0000086,8/29/2026 16:00,Account Takeover,Member Report,Investigating,High,"$3,398.34 ",$0.00 ,Digital Fraud,,
+FC0000087,M000087,A0000087,8/30/2026 0:00,ACH Fraud,Operations Review,Closed,Critical,"$3,535.53 ",$0.00 ,Enhanced Review,False Positive,9/3/2026 0:00
+FC0000088,M000088,A0000088,8/30/2026 8:00,Wire Fraud,Rules Engine,Closed,Low,"$3,672.72 ","$1,285.45 ",Card Ops,Confirmed Fraud,9/4/2026 8:00
+FC0000089,M000089,A0000089,8/30/2026 16:00,Identity Review,ML Model,Escalated,Medium,"$3,809.91 ",$0.00 ,Deposit Ops,,
+FC0000090,M000090,A0000090,8/31/2026 0:00,Card Fraud,Member Report,Open,High,"$3,947.10 ",$0.00 ,Digital Fraud,,
+FC0000091,M000091,A0000091,8/31/2026 8:00,Account Takeover,Operations Review,Investigating,Critical,"$4,084.29 ",$0.00 ,Enhanced Review,,
+FC0000092,M000092,A0000092,8/31/2026 16:00,ACH Fraud,Rules Engine,Closed,Low,"$4,221.48 ","$3,377.18 ",Card Ops,Confirmed Fraud,9/9/2026 16:00
+FC0000093,M000093,A0000093,9/1/2026 0:00,Wire Fraud,ML Model,Closed,Medium,"$4,358.67 ",$0.00 ,Deposit Ops,False Positive,9/11/2026 0:00
+FC0000094,M000094,A0000094,9/1/2026 8:00,Identity Review,Member Report,Escalated,High,"$4,495.86 ",$0.00 ,Digital Fraud,,
+FC0000095,M000095,A0000095,9/1/2026 16:00,Card Fraud,Operations Review,Open,Critical,"$4,633.05 ",$0.00 ,Enhanced Review,,
+FC0000096,M000096,A0000096,9/2/2026 0:00,Account Takeover,Rules Engine,Investigating,Low,"$4,770.24 ",$0.00 ,Card Ops,,
+FC0000097,M000097,A0000097,9/2/2026 8:00,ACH Fraud,ML Model,Closed,Medium,"$4,907.43 ","$1,717.60 ",Deposit Ops,Confirmed Fraud,9/4/2026 8:00
+FC0000098,M000098,A0000098,9/2/2026 16:00,Wire Fraud,Member Report,Closed,High,"$5,044.62 ","$4,035.70 ",Digital Fraud,Confirmed Fraud,9/5/2026 16:00
+FC0000099,M000099,A0000099,9/3/2026 0:00,Identity Review,Operations Review,Escalated,Critical,"$5,181.81 ",$0.00 ,Enhanced Review,,
+FC0000100,M000100,A0000100,9/3/2026 8:00,Card Fraud,Rules Engine,Open,Low,"$5,319.00 ",$0.00 ,Card Ops,,

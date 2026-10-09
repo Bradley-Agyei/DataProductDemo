@@ -1,0 +1,11 @@
+member_id,member_since_date,member_segment,age_band,home_state,digital_enrolled_flag,kyc_status,risk_rating,relationship_status,last_profile_update_ts,dp_load_ts,dp_batch_id
+M000001,2018-01-05,Retail,,NC,,,,Active,,2026-10-04 19:49:01,ccc477d8-8c4d-4ce6-bee2-5b5ff6f7c3a6
+M000002,2019-02-06,Premium,,NC,,,,Active,,2026-10-04 19:49:01,ccc477d8-8c4d-4ce6-bee2-5b5ff6f7c3a6
+M000003,2020-03-07,Student,,GA,,,,Active,,2026-10-04 19:49:01,ccc477d8-8c4d-4ce6-bee2-5b5ff6f7c3a6
+M000004,2021-04-08,Small Business,,VA,,,,Restricted,,2026-10-04 19:49:01,ccc477d8-8c4d-4ce6-bee2-5b5ff6f7c3a6
+M000005,2022-05-09,Retail,,TN,,,,Active,,2026-10-04 19:49:01,ccc477d8-8c4d-4ce6-bee2-5b5ff6f7c3a6
+M000006,2023-06-10,Premium,,SC,,,,Active,,2026-10-04 19:49:01,ccc477d8-8c4d-4ce6-bee2-5b5ff6f7c3a6
+M000007,2018-07-11,Student,,FL,,,,Active,,2026-10-04 19:49:01,ccc477d8-8c4d-4ce6-bee2-5b5ff6f7c3a6
+M000008,2019-08-12,Small Business,,MD,,,,Restricted,,2026-10-04 19:49:01,ccc477d8-8c4d-4ce6-bee2-5b5ff6f7c3a6
+M000009,2020-09-13,Retail,,VA,,,,Active,,2026-10-04 19:49:01,ccc477d8-8c4d-4ce6-bee2-5b5ff6f7c3a6
+M000010,2021-10-14,Premium,,NC,,,,Active,,2026-10-04 19:49:01,ccc477d8-8c4d-4ce6-bee2-5b5ff6f7c3a6
