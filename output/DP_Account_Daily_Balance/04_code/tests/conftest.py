@@ -1,7 +1,8 @@
 """Fixture product for FR-07: two accounts x three days that pass every rule.
 
-FR-01 to FR-06 are not built yet, so publish is tested on a hand-built frame in
-the shape they will produce. A0000002 goes overdrawn on day 1.
+FR-01 to FR-03 and FR-05 are not built yet, so publish is tested on hand-built
+balances in the shape they will produce; FR-06 (account_attributes) adds the
+account attributes. A0000002 goes overdrawn on day 1.
 """
 from datetime import date, datetime
 from decimal import Decimal as D
@@ -9,6 +10,7 @@ from decimal import Decimal as D
 import pandas as pd
 import pytest
 
+from src.account_daily_balance.attributes import account_attributes
 from src.account_daily_balance.run import publish
 
 LOAD_TS = datetime(2026, 10, 8, 6, 0, 0)
@@ -28,13 +30,15 @@ def make_product() -> pd.DataFrame:
     for account_id, member_id, status, opening, moves in ACCOUNTS:
         for day, (credits, debits, count) in zip(DAYS, moves):
             closing = opening + credits - debits
-            rows.append({"balance_date": day, "account_id": account_id, "member_id": member_id,
-                         "product_code": None, "account_status": status, "opening_balance": opening,
+            rows.append({"balance_date": day, "account_id": account_id, "opening_balance": opening,
                          "total_credits": credits, "total_debits": debits, "closing_balance": closing,
                          "available_balance": None, "overdraft_flag": closing < 0,
                          "transaction_count": count, "pending_debits": D("0.00")})
             opening = closing
-    return pd.DataFrame(rows, dtype=object)
+    accounts = pd.DataFrame([(a, m, f"P00{i}", status) for i, (a, m, status, *_) in enumerate(ACCOUNTS, 1)],
+                            columns=["account_id", "member_id", "product_id", "account_status"], dtype=object)
+    product, _ = account_attributes(pd.DataFrame(rows, dtype=object), accounts)
+    return product
 
 
 def make_counted() -> pd.DataFrame:

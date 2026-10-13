@@ -4,7 +4,7 @@
 
 `DP_Account_Daily_Balance` (Jira epic SCRUM-35) will publish one governed row per account per calendar day: opening, credits, debits, closing, available balance and overdraft flag. Its users are Finance & reporting and Fraud & risk. It's the fourth product on `dp_framework`.
 
-**FR-02, standardization (SCRUM-38)**, **FR-04, roll-forward (SCRUM-40)** and **FR-07, publish (SCRUM-43)** exist so far. FR-07 is the gate and outputs; FR-02 conforms the raw sources, and FR-04 builds the balance chain.
+**FR-02, standardization (SCRUM-38)**, **FR-04, roll-forward (SCRUM-40)**, **FR-06, account attributes (SCRUM-42)** and **FR-07, publish (SCRUM-43)** exist so far. FR-07 is the gate and outputs; FR-02 conforms the raw sources, FR-04 builds the balance chain, and FR-06 tags each row with its member, status and product and raises the dormant-activity warning.
 
 | Piece | What it does | Start here |
 |---|---|---|
@@ -13,7 +13,8 @@
 | `openspec/changes/scrum-40-account-daily-balance-roll-forward/` | FR-04 requirements and scenarios | `proposal.md` |
 | `openspec/changes/scrum-38-standardize-conform-ids/` | FR-02 requirements and scenarios | `proposal.md` |
 | `openspec/changes/scrum-43-account-daily-balance-publish/` | FR-07 requirements and scenarios | `proposal.md` |
-| Jira SCRUM-37, SCRUM-39, SCRUM-41 and SCRUM-42 | FR-01, FR-03, FR-05 and FR-06 (ingest, totals, overdraft, attributes) | the stories |
+| `openspec/changes/scrum-42-account-daily-balance-attributes/` | FR-06 requirements, scenarios and design decisions | `design.md` |
+| Jira SCRUM-37, SCRUM-39 and SCRUM-41 | FR-01, FR-03 and FR-05 (ingest, totals, overdraft) | the stories |
 
 ## How source standardization works
 
@@ -38,13 +39,25 @@ retains outside the raw PII boundary.
 
 `daily_totals` is the interface FR-03 must produce: one row per account-day with activity, with `account_id`, `balance_date`, `total_credits` and `total_debits` (Decimal, summed separately, never netted). The roll-forward raises on duplicate keys, on activity outside the spine (dropping it would break DQ-07), and on a missing opening balance.
 
+## How account attributes work
+
+`src/account_daily_balance/attributes.py` sits between the roll-forward and publish:
+
+1. **Attributes.** `account_attributes(balances, accounts, product_ref)` joins the standardized Account frame on `account_id` and adds `member_id`, `account_status` (the current value on every day, Q11) and `product_code`.
+2. **Product code.** Looked up by `product_id` in `data/reference/product_code_map.csv`, which the Product team owes (Q6). Until the file exists, `product_code` is NULL and stays `pending`, and the run is not blocked. When it arrives, it is validated first: a duplicate `product_id`, a blank value or a code outside DQ-04's list stops the run. An account with no match gets NULL and a **DQ-14** warning.
+3. **Dormant activity.** `dormant_activity(accounts, members, transactions)` raises **DQ-13** once per Dormant member with at least one transaction of any status in the run.
+
+Both warning lists are passed to `publish(..., upstream_warnings=...)`.
+
+Why **any** status counts for DQ-13: A0000004, M000004's only account, has Pending transactions only. Counting Posted only would miss a member the PRD says must be reported, and dormant activity is a fraud signal whether or not it reaches the ledger.
+
 ## How publishing works
 
-`publish(product, counted_transactions, upstream_rejects)` in `src/account_daily_balance/run.py`:
+`publish(product, counted_transactions, upstream_rejects, upstream_warnings)` in `src/account_daily_balance/run.py`:
 
 1. **PII guard.** Any PII-named column is masked with `*`, and so is the raw value of a reject on a PII column.
 2. **DQ gate.** DQ-01 to 07 and DQ-10 block publishing. DQ-11 only warns.
-3. **Exception report.** Upstream rejects and the warnings are listed with their rule IDs.
+3. **Exception report.** Upstream rejects, the rule warnings and the upstream warnings (DQ-13, DQ-14) are listed with their rule IDs. Upstream warnings also get one row each in the DQ results and never block.
 4. **Write.**
    - Always written: the ops tables (rejects, DQ results, run log) and the exception report.
    - Written only on SUCCESS: the product table, the CSV and the data contract. That's why a blocked run leaves the previous product in place.
@@ -59,13 +72,15 @@ retains outside the raw PII boundary.
   - **Not traced yet.** The OpenSpec change has no `prd.md`, so spec-gate doesn't trace the ACs.
 - **Contract checked against the PRD.** `tests/test_contract_prd.py` reads PRD §6 from the file and checks the contract's column order, types, key, allowed values and the 11 sample columns against it. A PRD edit that the contract doesn't follow fails the build.
 - **Pending columns.** `product_code` (Q6) and `available_balance` (Q5) are `pending`, so they're published as NULL until their stories are unblocked.
+- **When Q6 lands.** Add `product_code_map.csv` and flip `product_code` to ready in a follow-up change. DQ-03 will then block the NULL codes DQ-14 allows, so that change must choose: unmatched products block, or the column becomes nullable.
+- **Rule IDs are per product.** DQ-13 here means "Dormant member with activity". The Fraud Case PRD uses DQ-13 for something else; each product has its own `dq_exceptions` table, so the IDs don't collide. **DQ-14** (unmatched `product_id`, warning) is new and needs PO sign-off and a line in PRD §10.
 - **Assumptions awaiting sign-off:**
   - **Q2 (Finance):** `Account.current_balance` is the opening balance of the first day. Configurable in `config.FIRST_DAY_OPENING_COLUMN`.
   - **Q3 (source owner):** `Transaction.balance_after` is ignored; balances are recomputed from daily totals.
   - **Q7 (PO):** one row per account per calendar day (10 × 10 = 100 on the sample), with balances carried forward.
 - **Gaps until other stories land:**
-  - **FR-01 to FR-03 not built:** sample acceptance tests run via a test-only loader (`tests/sample_inputs.py`); counts Posted only (Q4 default). Delete the loader when SCRUM-39 lands.
-  - **FR-05, FR-06 columns missing:** `overdraft_flag`, `available_balance`, `member_id`, `account_status`, `product_code` are not produced, so only DQ-05 and DQ-06 are verified on FR-04 output.
+  - **FR-01 to FR-03 not built:** sample acceptance tests run via a test-only loader (`tests/sample_inputs.py`); counts Posted only (Q4 default). It reads only `member_id` and `member_status` from Member, so no PII column is parsed. Delete the loader when SCRUM-39 lands.
+  - **FR-05 columns missing:** `overdraft_flag` and `available_balance` are not produced; the FR-06 sample test stands in for them to run publish end to end.
   - **DQ-07 not exercised:** needs `counted_transactions` from FR-03.
   - **Q4, Q8 may change numbers:** if Pending or Reversed count, or if sign convention differs for loans and credit cards, balances for A0000004, A0000005, A0000007–A0000010 change.
   - **Design limits:** full rebuild only (no incremental), no close date in the source, so closed accounts keep getting rows, single currency.

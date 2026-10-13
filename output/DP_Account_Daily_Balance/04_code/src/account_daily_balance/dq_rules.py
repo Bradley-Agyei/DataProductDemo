@@ -1,8 +1,9 @@
 """Product DQ rules for Account Daily Balance (PRD §10), on top of the framework rule factories.
 
 Critical (block publish): DQ-01 to DQ-07 and DQ-10. DQ-11 is a warning.
-DQ-08/09 are reject rules owned by FR-02/FR-03, DQ-12/13 warnings by FR-05/FR-06;
-they reach the exception report through the rejects and warnings passed to publish.
+DQ-08/09 are reject rules owned by FR-02/FR-03, DQ-12/13/14 warnings by FR-05/FR-06
+(DQ-13 and DQ-14 in attributes.py); they reach the exception report through the
+rejects and `upstream_warnings` passed to publish, and are described in UPSTREAM_WARNINGS.
 """
 from __future__ import annotations
 
@@ -15,6 +16,12 @@ from . import config
 
 PRODUCT = ACCOUNT_DAILY_BALANCE.name
 KEY = ["account_id", "balance_date"]
+
+# Warnings raised before publish, by rule ID; publish records one DQ result per rule.
+UPSTREAM_WARNINGS = {
+    "DQ-13": "Dormant member with activity in the run (one warning per member)",
+    "DQ-14": "product_id has no product_code in the reference table (one warning per account)",
+}
 
 
 def _num(s: pd.Series) -> pd.Series:

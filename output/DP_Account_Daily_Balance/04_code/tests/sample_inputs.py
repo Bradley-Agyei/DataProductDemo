@@ -1,7 +1,8 @@
 """Test-only stand-in for FR-01 to FR-03 (SCRUM-37 to 39): sample inputs for the roll-forward.
 
-Reads Account, Transaction and Date from data/raw (read-only; Member is never
-opened), conforms account IDs via account_id_map and sums counted credits and
+Reads Account, Transaction and Date from data/raw (read-only), and from Member
+only member_id and member_status (MEMBER_COLUMNS): the PII columns are never
+parsed. Conforms account IDs via account_id_map and sums counted credits and
 debits per account-day. Counts Posted only, the PRD's Q4 default. Delete this
 once SCRUM-39 produces the daily totals.
 """
@@ -12,19 +13,21 @@ from decimal import Decimal
 import pandas as pd
 
 from src.account_daily_balance import config
+from src.account_daily_balance.standardize import _conform_member_id
 from src.dp_framework.contract import Column
 from src.dp_framework.types import parse_decimal, parse_value, to_date
 
 RAW_DIR = config.PROJECT_ROOT / "data" / "raw"
 ACCOUNT_MAP = config.PROJECT_ROOT / "data" / "reference" / "account_id_map.csv"
 COUNTED_STATUSES = ("Posted",)
+MEMBER_COLUMNS = ["member_id", "member_status"]
 KEY = ["account_id", "balance_date"]
 ZERO = Decimal("0.00")
 _DATE = Column("date", "DATE")
 
 
-def _read(path) -> pd.DataFrame:
-    return pd.read_csv(path, dtype=str, keep_default_na=False, encoding="utf-8-sig")
+def _read(path, usecols=None) -> pd.DataFrame:
+    return pd.read_csv(path, dtype=str, keep_default_na=False, encoding="utf-8-sig", usecols=usecols)
 
 
 def _amount(raw: str) -> Decimal:
@@ -46,6 +49,29 @@ def load_accounts() -> pd.DataFrame:
     return pd.DataFrame({"account_id": _conform(raw["account_id"]),
                          "open_date": raw["open_date"].map(lambda v: parse_value(v, _DATE)),
                          "current_balance": raw["current_balance"].map(_amount)}, dtype=object)
+
+
+def load_account_attributes() -> pd.DataFrame:
+    """account_id, member_id, product_id, account_status: the FR-06 inputs, IDs conformed."""
+    raw = _read(RAW_DIR / "Account.csv")
+    return pd.DataFrame({"account_id": _conform(raw["account_id"]),
+                         "member_id": raw["member_id"].map(_conform_member_id),
+                         "product_id": raw["product_id"],
+                         "account_status": raw["account_status"]}, dtype=object)
+
+
+def load_members() -> pd.DataFrame:
+    """member_id (conformed) and member_status only; no other Member column is read."""
+    raw = _read(RAW_DIR / "Member.csv", usecols=MEMBER_COLUMNS)
+    return pd.DataFrame({"member_id": raw["member_id"].map(_conform_member_id),
+                         "member_status": raw["member_status"]}, dtype=object)
+
+
+def load_activity() -> pd.DataFrame:
+    """Every transaction, any status, by conformed account_id: the DQ-13 input."""
+    raw = load_transactions()
+    return pd.DataFrame({"account_id": _conform(raw["account_id"]),
+                         "transaction_status": raw["transaction_status"]}, dtype=object)
 
 
 def load_dates() -> pd.DataFrame:
