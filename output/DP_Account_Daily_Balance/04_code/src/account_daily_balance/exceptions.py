@@ -40,6 +40,9 @@ def from_warnings(rules: list[Rule], frames) -> list[dict]:
     return rows
 
 
-def find_exceptions(rejects: pd.DataFrame, rules: list[Rule], frames, batch_id: str) -> pd.DataFrame:
-    rows = from_rejects(rejects) + from_warnings(rules, frames)
+def find_exceptions(rejects: pd.DataFrame, rules: list[Rule], frames, batch_id: str,
+                    upstream_warnings: list[dict] = ()) -> pd.DataFrame:
+    """`upstream_warnings` are exception rows built before publish (FR-05/FR-06, e.g. DQ-13 per member)."""
+    upstream = [{c: w[c] for c in COLUMNS} for w in upstream_warnings]
+    rows = from_rejects(rejects) + from_warnings(rules, frames) + upstream
     return pd.DataFrame(rows, columns=COLUMNS, dtype=object).assign(dp_batch_id=batch_id)

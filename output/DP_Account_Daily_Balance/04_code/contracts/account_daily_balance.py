@@ -15,8 +15,10 @@ ACCOUNT_DAILY_BALANCE = Table("account_daily_balance", (
       description="Canonical account ID via account_id_map."),
     C("member_id", "VARCHAR(10)", pattern=r"M\d{6}", description="Canonical member ID (M + 6 digits)."),
     C("product_code", "VARCHAR(12)", allowed=PRODUCT_CODES, status=PENDING,
-      description="Product code from the product code reference table (Q6, FR-06); NULL until supplied."),
-    C("account_status", "VARCHAR(12)", allowed=ACCOUNT_STATUSES, description="Current account status."),
+      description="Product code looked up by product_id in the product code reference table (Q6, FR-06); "
+                  "NULL until the table is supplied."),
+    C("account_status", "VARCHAR(12)", allowed=ACCOUNT_STATUSES,
+      description="Account status on the run date, applied to every day (no history, Q11)."),
     C("opening_balance", "DECIMAL(15,2)", description="Prior day's closing; day 1 = Account.current_balance."),
     C("total_credits", "DECIMAL(15,2)", description="Sum of counted credits."),
     C("total_debits", "DECIMAL(15,2)", description="Sum of counted debits."),

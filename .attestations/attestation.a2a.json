@@ -7,9 +7,9 @@
         {
           "data": {
             "evaluator": {
-              "costUsd": 0.1327736,
-              "model": "claude-haiku-4-5-20251001",
-              "sessionId": "103ecda8-40af-470c-85cf-6c741c1e2872"
+              "costUsd": 0.206766,
+              "model": "claude-sonnet-5-5",
+              "sessionId": "bbee67a1-b998-49c4-85f2-f86c25dc16e8"
             },
             "findings": {
               "unverified": [],
@@ -42,21 +42,21 @@
               }
             ],
             "modelVerdict": "pass",
-            "promptSha256": "57ff09afabd1665a0b42eef13ad7ba9fc96874250b79caeba131a0f6e645c16f",
+            "promptSha256": "13de333fc45d14827f7f7f1c10a140663bd6ea7f4f1700dde810978920f7ea92",
             "review": {
-              "base": "d8dc5ef08041cd5c7b0ed6c794864472171d8319",
+              "base": "22bd8094853318fa753c1c1a53d7a0f7f1c7fc96",
               "binaryFiles": 0,
-              "chars": 59587,
-              "files": 28
+              "chars": 116114,
+              "files": 18
             },
             "subject": {
               "algo": "sha256",
-              "digest": "bbf6f77711fd836016576e42a02b8d2bccde430d558ae9a00f71676a0b386321",
+              "digest": "dcff80243403ba1053c0dcdde79bd706de664fd24ade0d8164419d1d312fd4f3",
               "excludes": [
                 ".attestations/"
               ]
             },
-            "summary": "The change adds the llm-wiki skill, aligns the Payment Transaction contracts to the PRD, and adds tests and docs; it doesn't touch the left-shift gate code, so none of AC-1 to AC-7 are affected. I found no problems I could point at in the staged files.",
+            "summary": "The staged change is the Account Daily Balance FR-06 attributes work, and I found no defects. It writes no value from data/raw/ and no PII column: the Member loader reads only member_id and member_status, and the DQ-13 and DQ-14 warning details carry only IDs and counts. The left-shift-gates ACs are enforced by tooling that is not in this diff, so I could not review them.",
             "verdict": "pass"
           },
           "mediaType": "application/json"
@@ -67,23 +67,23 @@
   "contextId": "left-shift",
   "history": [
     {
-      "messageId": "msg-9f43baed-3124-4dd8-8fda-0d6049f792f9",
+      "messageId": "msg-5a17540e-9352-4659-ad9a-a34ad2930429",
       "parts": [
         {
-          "text": "review the staged change against its acceptance criteria; prompt sha256 57ff09afabd1665a0b42eef13ad7ba9fc96874250b79caeba131a0f6e645c16f"
+          "text": "review the staged change against its acceptance criteria; prompt sha256 13de333fc45d14827f7f7f1c10a140663bd6ea7f4f1700dde810978920f7ea92"
         }
       ],
       "role": "ROLE_USER"
     }
   ],
-  "id": "att-61de6338-51e9-48b9-ae67-871a9d55f440",
+  "id": "att-9625b2e2-32a0-42b6-a825-e43214a5b42e",
   "metadata": {
     "a2aVersion": "1.0.0",
     "producer": "tools/leftshift/attest.py"
   },
   "status": {
     "message": {
-      "messageId": "msg-ff0d95fc-5ac7-4f4f-9102-bd25d2035150",
+      "messageId": "msg-a84e2d92-fd70-44d7-9068-d39b3f951290",
       "parts": [
         {
           "text": "verdict: pass (0 verified HIGH findings)"
@@ -92,6 +92,6 @@
       "role": "ROLE_AGENT"
     },
     "state": "TASK_STATE_COMPLETED",
-    "timestamp": "2026-10-08T21:21:22Z"
+    "timestamp": "2026-10-13T15:11:24Z"
   }
 }

@@ -1,4 +1,5 @@
 """Non-PII source contracts used to standardize the core banking extracts."""
+from contracts.account_daily_balance import PRODUCT_CODES
 from src.dp_framework.contract import Column as C, Table
 
 CURRENCIES = ("USD",)
@@ -72,6 +73,14 @@ DATE = Table("Date", (
     C("year_number", "SMALLINT"),
     C("is_weekend", "BOOLEAN"),
 ), grain="One row per calendar day")
+
+# Q6 (FR-06): supplied by the Product team as data/reference/product_code_map.csv.
+# Codes share the product contract's allowed list, so the table cannot publish a
+# code the contract does not allow (DQ-04).
+PRODUCT_CODE_REF = Table("product_code_ref", (
+    C("product_id", "CHAR(4)", key="PK"),
+    C("product_code", "VARCHAR(12)", allowed=PRODUCT_CODES),
+), grain="One row per product")
 
 SOURCES = {
     table.name: table

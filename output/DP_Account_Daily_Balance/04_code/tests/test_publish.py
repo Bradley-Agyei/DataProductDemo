@@ -130,6 +130,37 @@ def test_exception_report_lists_rejects_and_warnings_with_rule_id(tmp_path):
     assert all(r["rule_id"] for r in report)
 
 
+# SCRUM-42 / FR-06: warnings raised before publish (DQ-13 per member, DQ-14 per account)
+UPSTREAM_WARNINGS = [
+    {"exception_type": "WARN", "rule_id": "DQ-13", "table_name": "account_daily_balance", "row_key": "M000002",
+     "detail": "Dormant member with activity: 2 transactions on 1 account"},
+    {"exception_type": "WARN", "rule_id": "DQ-14", "table_name": "account_daily_balance", "row_key": "A0000001",
+     "detail": "product_id has no product_code in the reference table (product_id P010)"},
+]
+
+
+def test_upstream_warnings_reach_exception_report(tmp_path):
+    res = run_publish(tmp_path, upstream_warnings=UPSTREAM_WARNINGS)
+    got = res.exceptions[["exception_type", "rule_id", "row_key"]].values.tolist()
+    assert ["WARN", "DQ-13", "M000002"] in got and ["WARN", "DQ-14", "A0000001"] in got
+    with open(tmp_path / "out" / "dq_exceptions.csv", newline="", encoding="utf-8") as f:
+        assert {(r["rule_id"], r["row_key"]) for r in csv.DictReader(f)} >= {("DQ-13", "M000002"),
+                                                                             ("DQ-14", "A0000001")}
+
+
+def test_upstream_warnings_in_dq_results(tmp_path):
+    res = run_publish(tmp_path, upstream_warnings=UPSTREAM_WARNINGS + UPSTREAM_WARNINGS[:1])
+    rows = res.dq_results.set_index("rule_id").loc[["DQ-13", "DQ-14"]]
+    assert rows["rows_failed"].tolist() == [2, 1]
+    assert set(rows["severity"]) == {"warn"} and set(rows["status"]) == {"Warn"}
+
+
+def test_upstream_warnings_do_not_block(tmp_path):
+    res = run_publish(tmp_path, upstream_warnings=UPSTREAM_WARNINGS)
+    assert res.status == "SUCCESS"
+    assert product_rows(res.db_path) == (6, res.batch_id)
+
+
 # AC: DDL generated from the contract and kept in sync by a test
 def test_committed_ddl_matches_contracts():
     for i, table in enumerate(DDL_TABLES, 1):

@@ -6,6 +6,10 @@ there:
 
     mask PII -> product DQ -> exception report -> run log -> write
 
+Warnings raised upstream (DQ-13 and DQ-14 from FR-06) come in as
+`upstream_warnings`: they are added to the exception report and DQ results and
+never block.
+
 Critical rules (DQ-01..07, DQ-10) block: the product table, CSV and data
 contract are only replaced on SUCCESS, so a blocked run leaves the previous
 product in place. Rejects, DQ results, exceptions and the run log are always
@@ -25,14 +29,14 @@ from pathlib import Path
 import pandas as pd
 
 from contracts.account_daily_balance import ACCOUNT_DAILY_BALANCE, DQ_EXCEPTIONS
-from src.dp_framework.dq import run_rules
+from src.dp_framework.dq import WARN, run_rules
 from src.dp_framework.load import Warehouse
 from src.dp_framework.ops_tables import DQ_RESULTS, REJECTS, RUN_LOG
 from src.dp_framework.publish import export_csv, write_contract, write_ddl
 from src.dp_framework.standardize import REJECT_COLUMNS
 
 from . import config
-from .dq_rules import PRODUCT, product_rules
+from .dq_rules import PRODUCT, UPSTREAM_WARNINGS, product_rules
 from .exceptions import find_exceptions
 from .pii import mask_pii, mask_reject_values
 
@@ -55,7 +59,8 @@ class PublishResult:
 
 
 def publish(product: pd.DataFrame, counted_transactions: pd.DataFrame,
-            upstream_rejects: pd.DataFrame | None = None, batch_id: str | None = None,
+            upstream_rejects: pd.DataFrame | None = None, upstream_warnings: list[dict] | None = None,
+            batch_id: str | None = None,
             load_ts: datetime | None = None, db_path: Path = config.DB_PATH,
             out_dir: Path = config.OUT_DIR) -> PublishResult:
     batch_id = batch_id or str(uuid.uuid4())
@@ -72,8 +77,10 @@ def publish(product: pd.DataFrame, counted_transactions: pd.DataFrame,
     rejects = mask_reject_values(pd.concat([r for r in (upstream, outcome.rejects) if not r.empty]
                                            or [pd.DataFrame(columns=REJECT_COLUMNS)], ignore_index=True))
     rejects = rejects.assign(dp_batch_id=batch_id)
-    exceptions = find_exceptions(rejects, rules, {PRODUCT: product}, batch_id)
-    dq_results = outcome.results.assign(dp_batch_id=batch_id, run_ts=load_ts)
+    warnings = list(upstream_warnings or [])
+    exceptions = find_exceptions(rejects, rules, {PRODUCT: product}, batch_id, warnings)
+    dq_results = pd.concat([outcome.results, _upstream_results(warnings)], ignore_index=True
+                           ).assign(dp_batch_id=batch_id, run_ts=load_ts)
     rows_in = len(outcome.frames[PRODUCT]) + len(outcome.rejects)
     run_log = pd.DataFrame([{"table_name": PRODUCT, "layer": "product", "rows_in": rows_in,
                              "rows_out": len(product) if status == SUCCESS else 0,
@@ -96,6 +103,16 @@ def publish(product: pd.DataFrame, counted_transactions: pd.DataFrame,
         export_csv(product, ACCOUNT_DAILY_BALANCE, out_dir / "account_daily_balance.csv")
 
     return PublishResult(batch_id, status, product, rejects, dq_results, exceptions, run_log, Path(db_path), out_dir)
+
+
+def _upstream_results(warnings: list[dict]) -> pd.DataFrame:
+    """One DQ result per upstream warning rule; warnings never block."""
+    counts = pd.Series([w["rule_id"] for w in warnings], dtype=object).value_counts().sort_index()
+    return pd.DataFrame([{"rule_id": rule_id, "description": UPSTREAM_WARNINGS.get(rule_id, ""),
+                          "table_name": PRODUCT, "severity": WARN, "rows_checked": int(n), "rows_failed": int(n),
+                          "status": "Warn"} for rule_id, n in counts.items()],
+                        columns=["rule_id", "description", "table_name", "severity", "rows_checked",
+                                 "rows_failed", "status"])
 
 
 def main(argv: list[str] | None = None) -> int:
